@@ -7,7 +7,7 @@ cities = DataFrame(CSV.File("generated_cities.csv"))
 
 restriction_cost = 450
 I = [first(cities.city,1)]
-#visited = [first(cities.city,1)]
+able_to_visited = cities[.!(cities[:, :city] .∈ I), :city]
 travel_cost = 0
 recollected_prize = 0
 
