@@ -5,15 +5,16 @@ using DataFrames
 #variable initialization
 cities = DataFrame(CSV.File("generated_cities.csv"))
 
-restriction_cost = 450
+minimum_profit = 450
 I = [first(cities.city,1)]
 able_to_visited = cities[.!(cities[:, :city] .∈ I), :city]
 travel_cost = 0
 recollected_prize = 0
+last = I
 
 #while loop that ends when all cities are visited or the total travel cost reaches its limit
 
-while (cities.city ∉ I) || (travel_cost < restriction_cost)
+while (length(able_to_visited) ≠ 0) || (recollected_prize < minimum_profit)
     #selects the current city to be the point of search based on the most recently inserted one in the tour
     current_city = cities[cities[!, :city] .== last(I), :]
 
