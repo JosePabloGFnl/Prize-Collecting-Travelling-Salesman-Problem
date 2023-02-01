@@ -10,7 +10,6 @@ I = [first(cities.city,1)]
 able_to_visited = cities[.!(cities[:, :city] .∈ I), :city]
 travel_cost = 0
 recollected_prize = 0
-last = I
 
 #while loop that ends when all cities are visited or the total travel cost reaches its limit
 
@@ -28,5 +27,6 @@ while (length(able_to_visited) ≠ 0) || (recollected_prize < minimum_profit)
     added_city = added_city[sortperm(max.(added_city.prize_cost_ratio); rev=true),:]
     
     push!( I, first(added_city.city,1) )
+    deleteat!( able_to_visited, first(added_city.city,1) )
 
 end
