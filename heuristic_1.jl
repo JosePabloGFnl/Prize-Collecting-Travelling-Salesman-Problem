@@ -8,13 +8,11 @@ cities = DataFrame(CSV.File("generated_cities.csv"))
 minimum_profit = 450
 I = [Int64(cities[1, :city])]
 able_to_visited = cities[.!(cities[:, :city] .∈ I), :city]
-travel_cost = 0
 recollected_prize = Int64(cities[1, :prize])
-print(recollected_prize)
 
 #while loop that ends when all cities are visited or the total travel cost reaches its limit
 
-while (length(able_to_visited) ≠ 0) || (recollected_prize < minimum_profit)
+while (length(able_to_visited) ≠ 0) && (recollected_prize < minimum_profit)
     #selects the current city to be the point of search based on the most recently inserted one in the tour
     current_city = cities[cities[!, :city] .== last(I), :]
 
@@ -33,3 +31,5 @@ while (length(able_to_visited) ≠ 0) || (recollected_prize < minimum_profit)
     deleteat!( able_to_visited, findfirst(able_to_visited .== added_city[1, :city]) )
 
 end
+
+print(I)
