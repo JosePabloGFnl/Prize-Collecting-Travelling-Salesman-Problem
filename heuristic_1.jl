@@ -6,7 +6,7 @@ using DataFrames
 cities = DataFrame(CSV.File("generated_cities.csv"))
 
 minimum_profit = 450
-I = [first(cities.city,1)]
+I = [Int64(cities[1, :city])]
 able_to_visited = cities[.!(cities[:, :city] .∈ I), :city]
 travel_cost = 0
 recollected_prize = 0
@@ -23,10 +23,10 @@ while (length(able_to_visited) ≠ 0) || (recollected_prize < minimum_profit)
     cities[!,:prize_cost_ratio] = cities[!,:prize] ./ cities[!,:prize_cost_ratio]
     
     #add the one with the biggest prize_cost_ratio
-    added_city = cities[cities[!, :city] .∉ (I), :]
-    added_city = added_city[sortperm(max.(added_city.prize_cost_ratio); rev=true),:]
+    added_city = cities[findall(in(able_to_visited), cities[!,:city]), :]
+    added_city = added_city[sortperm(added_city[:, :prize_cost_ratio], rev=true), :]
     
-    push!( I, first(added_city.city,1) )
-    deleteat!( able_to_visited, first(added_city.city,1) )
+    append!( I, added_city[1, :city] )
+    deleteat!( able_to_visited, findfirst(able_to_visited .== added_city[1, :city]) )
 
 end
