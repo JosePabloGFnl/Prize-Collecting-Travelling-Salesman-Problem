@@ -9,7 +9,8 @@ minimum_profit = 450
 I = [Int64(cities[1, :city])]
 able_to_visited = cities[.!(cities[:, :city] .∈ I), :city]
 travel_cost = 0
-recollected_prize = 0
+recollected_prize = Int64(cities[1, :prize])
+print(recollected_prize)
 
 #while loop that ends when all cities are visited or the total travel cost reaches its limit
 
@@ -25,6 +26,8 @@ while (length(able_to_visited) ≠ 0) || (recollected_prize < minimum_profit)
     #add the one with the biggest prize_cost_ratio
     added_city = cities[findall(in(able_to_visited), cities[!,:city]), :]
     added_city = added_city[sortperm(added_city[:, :prize_cost_ratio], rev=true), :]
+
+    global recollected_prize += added_city[!,:prize][1]
     
     append!( I, added_city[1, :city] )
     deleteat!( able_to_visited, findfirst(able_to_visited .== added_city[1, :city]) )
