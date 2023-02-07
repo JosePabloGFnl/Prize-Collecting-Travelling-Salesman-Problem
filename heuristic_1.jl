@@ -5,6 +5,7 @@ using DataFrames
 #variable initialization
 cities = DataFrame(CSV.File("generated_cities.csv"))
 
+@time begin
 minimum_profit = 450
 I = [Int64(cities[1, :city])]
 able_to_visited = cities[.!(cities[:, :city] .∈ I), :city]
@@ -37,3 +38,4 @@ end
 println(I)
 println(recollected_prize)
 println(total_travel_cost)
+end
