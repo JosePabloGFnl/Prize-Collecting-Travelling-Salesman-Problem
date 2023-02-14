@@ -19,14 +19,14 @@ I = [Int64(cities[1, :city])]
 
 push!(I, Int64(min_from_1[min_city, :city]), 1)
 
-able_to_visited = cities[.!(cities[:, :city] .∈ I), :city]
-recollected_prize = Int64(cities[1, :prize])
+able_to_visited = filter(row -> !(row[:city] in I), cities)
+
+recollected_prize = sum(cities.prize[cities.city .∈ Ref(I)])
 total_travel_cost = 0
 
 #while loop that ends when all cities are visited or the total travel cost reaches its limit
 
 while (length(able_to_visited) ≠ 0) && (recollected_prize < minimum_profit)
-    
 
 end
 
