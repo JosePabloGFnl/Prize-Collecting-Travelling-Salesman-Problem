@@ -28,6 +28,8 @@ recollected_prize = sum(cities.prize[cities.city .∈ Ref(I)])
 #while loop that ends when all cities are visited or the total travel cost reaches its limit
 
 while (length(able_to_visited) ≠ 0) && (recollected_prize < minimum_profit)
+    #selects the current city to be the point of search based on the most recently inserted one in the tour
+    current_city = cities[cities[!, :city] .== I[end-1], :]
 
 end
 
