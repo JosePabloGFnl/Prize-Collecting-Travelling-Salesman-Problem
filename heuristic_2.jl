@@ -15,6 +15,8 @@ delete!(min_from_1, [1])
 select(min_from_1, :distances, :distances => ByRow(sqrt))
 min_city = findmin(min_from_1[!, :distances])[2]
 
+total_travel_cost = min_city
+
 I = [Int64(cities[1, :city])]
 
 push!(I, Int64(min_from_1[min_city, :city]), 1)
@@ -22,7 +24,6 @@ push!(I, Int64(min_from_1[min_city, :city]), 1)
 able_to_visited = filter(row -> !(row[:city] in I), cities)
 
 recollected_prize = sum(cities.prize[cities.city .∈ Ref(I)])
-total_travel_cost = 0
 
 #while loop that ends when all cities are visited or the total travel cost reaches its limit
 
