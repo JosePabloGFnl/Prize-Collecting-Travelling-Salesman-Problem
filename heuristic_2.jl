@@ -21,7 +21,7 @@ I = [Int64(cities[1, :city])]
 
 push!(I, Int64(min_from_1[min_city, :city]), 1)
 
-able_to_visited = filter(row -> !(row[:city] in I), cities)
+able_to_visited = setdiff(cities[:, :city], I)
 
 recollected_prize = sum(cities.prize[cities.city .∈ Ref(I)])
 
