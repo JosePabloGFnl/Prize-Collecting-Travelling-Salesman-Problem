@@ -9,7 +9,7 @@ cities = DataFrame(CSV.File("generated_cities.csv"))
 minimum_profit = 450
 
 #function for minimum distance
-min_from_1 = copy(cities)
+min_from_1 = deepcopy(cities)
 min_from_1[!,:distances] = ((first(min_from_1[1,:x_axis],1)) .- min_from_1[!,:x_axis]) .^ 2 + ((first(min_from_1[1,:y_axis],1)) .- min_from_1[!,:y_axis]) .^ 2
 delete!(min_from_1, [1])
 select(min_from_1, :distances, :distances => ByRow(sqrt))
@@ -28,8 +28,15 @@ recollected_prize = sum(cities.prize[cities.city .∈ Ref(I)])
 #while loop that ends when all cities are visited or the total travel cost reaches its limit
 
 while (length(able_to_visited) ≠ 0) && (recollected_prize < minimum_profit)
-    #selects the current city to be the point of search based on the most recently inserted one in the tour
-    current_city = cities[cities[!, :city] .== I[end-1], :]
+
+    #checks the distances by coordinates between the selected city and the available
+    cities[!,:prize_cost_ratio] = cities[!,:prize] ./ total_travel_cost
+    
+    #add the one with the biggest prize_cost_ratio
+    added_city = cities[findall(in(able_to_visited), cities[!,:city]), :]
+    added_city = added_city[sortperm(added_city[:, :prize_cost_ratio], rev=true), :]
+
+    global recollected_prize += added_city[!,:prize][1]
 
 end
 
