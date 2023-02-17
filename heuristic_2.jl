@@ -12,7 +12,7 @@ function cheapest_insertion_heuristic(cities_file::AbstractString, minimum_profi
     select(min_from_1, :distances, :distances => ByRow(sqrt))
     min_city = findmin(min_from_1[!, :distances])[2]
 
-    total_travel_cost = min_city
+    total_travel_cost = min_from_1[min_city, :distances]
 
     I = [Int64(cities[1, :city])]
 
@@ -41,6 +41,7 @@ function cheapest_insertion_heuristic(cities_file::AbstractString, minimum_profi
                     sqrt((cities[I[i+1], :x_axis] - cities[I[i], :x_axis])^2 + (cities[I[i+1], :y_axis] - cities[I[i], :y_axis])^2)
                     for i in 1:length(I)-1]
 
+        total_travel_cost += minimum(distances)
         min_index = argmin(distances)
         insert!(I, min_index+1, Int64(added_city[1, :city]))
 
