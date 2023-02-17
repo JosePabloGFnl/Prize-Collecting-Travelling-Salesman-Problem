@@ -25,7 +25,10 @@ function nearest_neighbor_heuristic(cities_file::AbstractString, minimum_profit:
         added_city = added_city[sortperm(added_city[:, :prize_cost_ratio], rev=true), :]
 
         recollected_prize += added_city[1, :prize]
+        total_travel_cost += added_city[1, :distances]
 
+        push!(I, added_city[1, :city])
+        able_to_visited = setdiff(able_to_visited, [added_city[1, :city]])
     end
 
     return I, recollected_prize, total_travel_cost

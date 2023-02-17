@@ -1,12 +1,9 @@
-using CSV
+using CSV, DataFrames
 #Cheapest Insertion-type Heuristic
-using DataFrames
 
-#variable initialization
-cities = DataFrame(CSV.File("generated_cities.csv"))
-
-@time begin
-    minimum_profit = 450
+function cheapest_insertion_heuristic(cities_file::AbstractString, minimum_profit::Int64)
+    #variable initialization
+    cities = DataFrame(CSV.File(cities_file))
 
     #function for minimum distance
     min_from_1 = deepcopy(cities)
@@ -37,14 +34,12 @@ cities = DataFrame(CSV.File("generated_cities.csv"))
         added_city = added_city[sortperm(added_city[:, :prize_cost_ratio], rev=true), :]
 
         recollected_prize += added_city[1, :prize]
-        global total_travel_cost += added_city[!,:distances][1]
-        
-        append!( I, added_city[1, :city] )
-        deleteat!( able_to_visited, findfirst(able_to_visited .== added_city[1, :city]) )
 
     end
-
-    println(I)
-    println(recollected_prize)
-    println(total_travel_cost)
+    return I, recollected_prize, total_travel_cost
 end
+
+I, recollected_prize, total_travel_cost = nearest_neighbor_heuristic("generated_cities.csv", 450)
+println(I)
+println(recollected_prize)
+println(total_travel_cost)
