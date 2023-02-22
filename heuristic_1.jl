@@ -1,4 +1,6 @@
-using CSV, DataFrames
+using CSV, DataFrames, DotEnv
+DotEnv.load()
+#Neartest Neighbor-type Heuristic
 
 function nearest_neighbor_heuristic(cities_file::AbstractString, minimum_profit::Int64)
     # load cities data
@@ -34,8 +36,7 @@ function nearest_neighbor_heuristic(cities_file::AbstractString, minimum_profit:
     return I, recollected_prize, total_travel_cost
 end
 
-# Example usage:
-I, recollected_prize, total_travel_cost = nearest_neighbor_heuristic("generated_cities.csv", 450)
+I, recollected_prize, total_travel_cost = nearest_neighbor_heuristic(ENV["GENERATED_FILE"], parse(Int64, ENV["MINIMUM_PROFIT"]))
 println(I)
 println(recollected_prize)
 println(total_travel_cost)

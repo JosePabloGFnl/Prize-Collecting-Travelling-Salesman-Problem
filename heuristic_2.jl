@@ -1,4 +1,5 @@
-using CSV, DataFrames
+using CSV, DataFrames, DotEnv
+DotEnv.load()
 #Cheapest Insertion-type Heuristic
 
 function cheapest_insertion_heuristic(cities_file::AbstractString, minimum_profit::Int64)
@@ -52,7 +53,7 @@ function cheapest_insertion_heuristic(cities_file::AbstractString, minimum_profi
     return I, recollected_prize, total_travel_cost
 end
 
-I, recollected_prize, total_travel_cost = cheapest_insertion_heuristic("generated_cities.csv", 450)
+I, recollected_prize, total_travel_cost = cheapest_insertion_heuristic(ENV["GENERATED_FILE"], parse(Int64, ENV["MINIMUM_PROFIT"]))
 println(I)
 println(recollected_prize)
 println(total_travel_cost)
