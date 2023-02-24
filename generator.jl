@@ -1,12 +1,12 @@
-using CSV
-using DataFrames
+using CSV, DataFrames, DotEnv
+DotEnv.load()
 
-cities = 10
+cities = parse(Int64, ENV["QUANTITY_CITIES"])
 
 df = DataFrame(city = 1:cities, 
-               x_axis = rand(0:99,cities),
-               y_axis = rand(0:99,cities),
-               prize = rand(0:99,cities)
+               x_axis = rand(parse(Int64, ENV["MIN_X_AXIS"]):parse(Int64, ENV["MAX_X_AXIS"]),cities),
+               y_axis = rand(parse(Int64, ENV["MIN_Y_AXIS"]):parse(Int64, ENV["MAX_Y_AXIS"]),cities),
+               prize = rand(parse(Int64, ENV["MIN_PRIZE"]):parse(Int64, ENV["MAX_PRIZE"]),cities)
                )
 
-CSV.write("generated_cities.csv", df)
+CSV.write(ENV["GENERATED_FILE"], df)
