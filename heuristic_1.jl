@@ -18,8 +18,7 @@ function nearest_neighbor_heuristic(cities_file::AbstractString, minimum_profit:
         current_city = cities[cities[!, :city] .== last(I), :]
 
         # checks the distances by coordinates between the selected city and the available
-        cities[!,:distances] = ((first(current_city[!,:x_axis],1)) .- cities[!,:x_axis]) .^ 2 + ((first(current_city[!,:y_axis],1)) .- cities[!,:y_axis]) .^ 2
-        select(cities, :distances, :distances => ByRow(sqrt))
+        cities[!,:distances] = sqrt.(((first(current_city[!,:x_axis],1)) .- cities[!,:x_axis]) .^ 2 + ((first(current_city[!,:y_axis],1)) .- cities[!,:y_axis]) .^ 2)
         cities[!,:prize_cost_ratio] = cities[!,:prize] ./ cities[!,:distances]
 
         # add the one with the biggest prize_cost_ratio
