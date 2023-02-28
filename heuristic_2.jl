@@ -8,12 +8,11 @@ function cheapest_insertion_heuristic(cities_file::AbstractString, minimum_profi
 
     #function for minimum distance
     min_from_1 = deepcopy(cities)
-    min_from_1[!,:distances] = ((first(min_from_1[1,:x_axis],1)) .- min_from_1[!,:x_axis]) .^ 2 + ((first(min_from_1[1,:y_axis],1)) .- min_from_1[!,:y_axis]) .^ 2
+    min_from_1[!,:distances] = sqrt.(((first(min_from_1[1,:x_axis],1)) .- min_from_1[!,:x_axis]) .^ 2 + ((first(min_from_1[1,:y_axis],1)) .- min_from_1[!,:y_axis]) .^ 2)
     delete!(min_from_1, [1])
-    select(min_from_1, :distances, :distances => ByRow(sqrt))
     min_city = findmin(min_from_1[!, :distances])[2]
 
-    total_travel_cost = min_from_1[min_city, :distances]
+    total_travel_cost = (min_from_1[min_city, :distances])*2
 
     I = [Int64(cities[1, :city])]
 
