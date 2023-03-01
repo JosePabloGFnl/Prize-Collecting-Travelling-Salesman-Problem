@@ -1,10 +1,13 @@
-using CSV, DataFrames, DotEnv
+include("Utils.jl")
+using CSV, DataFrames, DotEnv, .Utils
 DotEnv.load()
 #Cheapest Insertion-type Heuristic
 
-function cheapest_insertion_heuristic(cities_file::AbstractString, minimum_profit::Int64)
+function cheapest_insertion_heuristic(cities_file::AbstractString)
     #variable initialization
     cities = DataFrame(CSV.File(cities_file))
+
+    minimum_profit = calculate_minimum_profit(cities)
 
     #function for minimum distance
     min_from_1 = deepcopy(cities)
@@ -49,10 +52,9 @@ function cheapest_insertion_heuristic(cities_file::AbstractString, minimum_profi
         able_to_visited = setdiff(cities[:, :city], I)
 
     end
-    return I, recollected_prize, total_travel_cost
+    return recollected_prize, total_travel_cost
 end
 
-I, recollected_prize, total_travel_cost = cheapest_insertion_heuristic(ENV["GENERATED_FILE"], parse(Int64, ENV["MINIMUM_PROFIT"]))
-println(I)
+recollected_prize, total_travel_cost = cheapest_insertion_heuristic(ENV["GENERATED_FILE"])
 println(recollected_prize)
 println(total_travel_cost)
