@@ -1,4 +1,4 @@
-using CSV, DataFrames, DotEnv
+using DataFrames, DotEnv, DelimitedFiles
 DotEnv.load()
 
 cities = parse(Int64, ENV["QUANTITY_CITIES"])
@@ -9,4 +9,4 @@ df = DataFrame(city = 1:cities,
                prize = rand(parse(Int64, ENV["MIN_PRIZE"]):Int(round(cities/2)),cities)
                )
 
-CSV.write(ENV["GENERATED_FILE"], df)
+writedlm("cities.txt", Matrix(df))
