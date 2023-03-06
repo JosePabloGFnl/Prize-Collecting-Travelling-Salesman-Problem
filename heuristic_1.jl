@@ -1,12 +1,14 @@
 include("Utils.jl")
-using DotEnv, .Utils, DelimitedFiles
-DotEnv.load()
+using .Utils, DelimitedFiles
 
 function nearest_neighbor_heuristic(cities_file::AbstractString)
     # load cities data
     cities = readdlm(cities_file, '\t', Int64)
 
     minimum_profit = calculate_minimum_profit(cities)
+
+    # calculate distances between all pairs of cities
+    dist_mat = sqrt.(sum((reshape(cities[:, 2:3], :, 1, 2) .- cities[:, 2:3]).^2, dims=3))
 
     # variable initialization
     I = [cities[1, 1]]
@@ -19,12 +21,12 @@ function nearest_neighbor_heuristic(cities_file::AbstractString)
         # selects the current city to be the point of search based on the most recently inserted one in the tour
         current_city = cities[findlast(x -> x in I, cities[:, 1]), :]
 
-        # checks the distances by coordinates between the selected city and the available
-        distances = @views sqrt.((current_city[2] .- cities[:, 2]).^2 .+ (current_city[3] .- cities[:, 3]).^2)
+        # get distances between the selected city and the available cities
+        distances = dist_mat[current_city[1], findall(able_to_visited .== true), 1]
         prize_cost_ratios = cities[:, 4] ./ distances
 
         # add the one with the biggest prize_cost_ratio
-        added_city_idx = argmax(prize_cost_ratios[findall(in(able_to_visited), cities[:, 1])])
+        added_city_idx = argmax(cities[findall(in(able_to_visited), cities[:, 1]), 4] ./ distances)
         added_city = cities[findall(in(able_to_visited), cities[:, 1])[added_city_idx], :]
 
         recollected_prize += added_city[4]
@@ -37,6 +39,6 @@ function nearest_neighbor_heuristic(cities_file::AbstractString)
     return recollected_prize, total_travel_cost
 end
 
-recollected_prize, total_travel_cost = nearest_neighbor_heuristic(ENV["GENERATED_FILE"])
+recollected_prize, total_travel_cost = nearest_neighbor_heuristic("cities.txt")
 println(recollected_prize)
 println(total_travel_cost)
