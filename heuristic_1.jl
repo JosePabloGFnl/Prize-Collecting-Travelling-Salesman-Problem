@@ -1,5 +1,6 @@
 include("Utils.jl")
-using .Utils, DelimitedFiles
+using DotEnv, .Utils, DelimitedFiles
+DotEnv.load()
 
 function nearest_neighbor_heuristic(cities_file::AbstractString)
     # load cities data
@@ -8,7 +9,8 @@ function nearest_neighbor_heuristic(cities_file::AbstractString)
     minimum_profit = calculate_minimum_profit(cities)
 
     # calculate distances between all pairs of cities
-    dist_mat = sqrt.(sum((reshape(cities[:, 2:3], :, 1, 2) .- cities[:, 2:3]).^2, dims=3))
+    n = size(cities, 1)
+    dist_mat = sqrt.(sum((reshape(cities[:, 2:3], 1, n, 2) .- reshape(cities[:, 2:3], n, 1, 2)).^2, dims=3))    
 
     # variable initialization
     I = [cities[1, 1]]
@@ -22,7 +24,7 @@ function nearest_neighbor_heuristic(cities_file::AbstractString)
         current_city = cities[findlast(x -> x in I, cities[:, 1]), :]
 
         # get distances between the selected city and the available cities
-        distances = dist_mat[current_city[1], findall(able_to_visited .== true), 1]
+        distances = dist_mat[current_city[1], findall(in(able_to_visited), cities[:, 1])]
         prize_cost_ratios = cities[:, 4] ./ distances
 
         # add the one with the biggest prize_cost_ratio
@@ -39,6 +41,6 @@ function nearest_neighbor_heuristic(cities_file::AbstractString)
     return recollected_prize, total_travel_cost
 end
 
-recollected_prize, total_travel_cost = nearest_neighbor_heuristic("cities.txt")
+recollected_prize, total_travel_cost = nearest_neighbor_heuristic(ENV["GENERATED_FILE"])
 println(recollected_prize)
 println(total_travel_cost)

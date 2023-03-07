@@ -1,6 +1,7 @@
-using DataFrames, DelimitedFiles
+using DataFrames,DotEnv, DelimitedFiles
+DotEnv.load()
 
-cities = 500000
+cities = parse(Int64, ENV["QUANTITY_CITIES"])
 
 df = DataFrame(city = 1:cities, 
                x_axis = rand(0:(cities*2),cities),
@@ -8,4 +9,4 @@ df = DataFrame(city = 1:cities,
                prize = rand(0:Int(round(cities/2)),cities)
                )
 
-writedlm("cities.txt", Matrix(df))
+writedlm(ENV["GENERATED_FILE"], Matrix(df))
