@@ -26,12 +26,11 @@ function nearest_neighbor_heuristic(cities_file::AbstractString)
         # get distances between the selected city and the available cities
         distances = dist_mat[current_city[1], findall(in(able_to_visited), cities[:, 1])]
         # calculate prize/cost ratios for the available cities
-        indices = findall(in(able_to_visited), cities[:, 1])
-        prize_cost_ratios = cities[indices, 4] ./ distances
+        prize_cost_ratios = cities[able_to_visited, 4] ./ distances
 
         # add the city with the biggest prize/cost ratio
         added_city_idx = argmax(prize_cost_ratios)
-        added_city = cities[indices[added_city_idx], :]
+        added_city = cities[able_to_visited[added_city_idx], :]
 
         recollected_prize += added_city[4]
         total_travel_cost += distances[added_city_idx]
