@@ -2,10 +2,10 @@ using DataFrames,DotEnv, DelimitedFiles
 DotEnv.load()
 
 cities = parse(Int64, ENV["QUANTITY_CITIES"])
-min_axis = parse(Int64, ENV["QUANTITY_CITIES"])
-min_prize = parse(Int64, ENV["QUANTITY_CITIES"])
-max_axis = parse(Int64, ENV["QUANTITY_CITIES"])
-max_prize = parse(Int64, ENV["QUANTITY_CITIES"])
+min_axis = parse(Int64, ENV["MIN_AXIS"])
+min_prize = parse(Int64, ENV["MIN_PRIZE"])
+max_axis = parse(Int64, ENV["MAX_AXIS"])
+max_prize = parse(Int64, ENV["MAX_PRIZE"])
 
 df = DataFrame(city = 1:cities, 
                x_axis = rand(min_axis:max_axis,cities),
