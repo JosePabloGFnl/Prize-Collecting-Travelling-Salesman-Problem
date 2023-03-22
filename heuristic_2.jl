@@ -1,5 +1,5 @@
 include("Utils.jl")
-using DotEnv, .Utils, DelimitedFiles
+using DotEnv, .Utils, DelimitedFiles, BenchmarkTools
 DotEnv.load()
 #Cheapest Insertion-type Heuristic
 
@@ -58,6 +58,6 @@ function cheapest_insertion_heuristic(cities_file::AbstractString)
     return recollected_prize, total_travel_cost
 end
 
-recollected_prize, total_travel_cost = cheapest_insertion_heuristic(ENV["GENERATED_FILE"])
+recollected_prize, total_travel_cost = @btime cheapest_insertion_heuristic(ENV["GENERATED_FILE"])
 println(recollected_prize)
 println(total_travel_cost)

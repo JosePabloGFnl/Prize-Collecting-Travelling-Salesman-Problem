@@ -1,5 +1,5 @@
 include("Utils.jl")
-using DotEnv, .Utils, DelimitedFiles
+using DotEnv, .Utils, DelimitedFiles, BenchmarkTools
 DotEnv.load()
 
 function nearest_neighbor_heuristic(cities_file::AbstractString)
@@ -42,6 +42,6 @@ function nearest_neighbor_heuristic(cities_file::AbstractString)
     return recollected_prize, total_travel_cost
 end
 
-recollected_prize, total_travel_cost = nearest_neighbor_heuristic(ENV["GENERATED_FILE"])
+recollected_prize, total_travel_cost = @btime nearest_neighbor_heuristic(ENV["GENERATED_FILE"])
 println(recollected_prize)
 println(total_travel_cost)
