@@ -55,9 +55,10 @@ function cheapest_insertion_heuristic(cities_file::AbstractString)
         able_to_visited = setdiff(cities[:, 1], I)
 
     end
-    return recollected_prize, total_travel_cost
+    return recollected_prize, total_travel_cost, minimum_profit
 end
 
-recollected_prize, total_travel_cost = @btime cheapest_insertion_heuristic(ENV["GENERATED_FILE"])
+recollected_prize, total_travel_cost, minimum_profit = @btime cheapest_insertion_heuristic(ENV["GENERATED_FILE"])
 println(recollected_prize)
 println(total_travel_cost)
+println(minimum_profit)
