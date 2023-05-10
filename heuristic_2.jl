@@ -32,8 +32,8 @@ function cheapest_insertion_heuristic(cities_file::AbstractString)
 
     recollected_prize = sum(cities[in.(cities[:, 1], Ref(I)), 4])
 
-    #while loop that ends when all cities are visited and the recollected prize in the tour is greater than the minimum profit
-
+    #while loop that ends when all cities are visited or the recollected prize in the tour is greater than the minimum profit
+    #for some reason, operands & and | work as opposites in Julia
     while (!isempty(able_to_visited)) && (recollected_prize < minimum_profit)
 
         #checks the distances by coordinates between the selected city and the available
@@ -55,10 +55,11 @@ function cheapest_insertion_heuristic(cities_file::AbstractString)
         able_to_visited = setdiff(cities[:, 1], I)
 
     end
-    return recollected_prize, total_travel_cost, minimum_profit
+    return recollected_prize, total_travel_cost, minimum_profit, I
 end
 
-recollected_prize, total_travel_cost, minimum_profit = @btime cheapest_insertion_heuristic(ENV["GENERATED_FILE"])
+recollected_prize, total_travel_cost, minimum_profit, I = @btime cheapest_insertion_heuristic(ENV["GENERATED_FILE"])
 println(recollected_prize)
 println(total_travel_cost)
 println(minimum_profit)
+println(I)

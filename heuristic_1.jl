@@ -15,10 +15,11 @@ function nearest_neighbor_heuristic(cities_file::AbstractString)
     # variable initialization
     I = [cities[1, 1]]
     able_to_visited = cities[2:end, 1]
-    recollected_prize = cities[1, 2]
+    recollected_prize = cities[1, 4]
     total_travel_cost = 0.0
 
-    # while loop that ends when all cities are visited or the total travel cost reaches its limit
+    # while loop that ends when all cities are visited or the minimum profit is recollected
+    #for some reason, operands & and | work as opposites in Julia
     while (!isempty(able_to_visited)) && (recollected_prize < minimum_profit)
         # selects the current city to be the point of search based on the most recently inserted one in the tour
         current_city = cities[findlast(x -> x in I, cities[:, 1]), :]
@@ -39,10 +40,11 @@ function nearest_neighbor_heuristic(cities_file::AbstractString)
         able_to_visited = setdiff(able_to_visited, [added_city[1]])
     end
 
-    return recollected_prize, total_travel_cost, minimum_profit
+    return recollected_prize, total_travel_cost, minimum_profit, I
 end
 
-recollected_prize, total_travel_cost, minimum_profit = @btime nearest_neighbor_heuristic(ENV["GENERATED_FILE"])
+recollected_prize, total_travel_cost, minimum_profit, I = @btime nearest_neighbor_heuristic(ENV["GENERATED_FILE"])
 println(recollected_prize)
 println(total_travel_cost)
 println(minimum_profit)
+println(I)
