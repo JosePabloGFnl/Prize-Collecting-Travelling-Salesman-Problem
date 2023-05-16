@@ -1,6 +1,9 @@
 include("Utils.jl")
+include("experimental_results.jl")
 using DotEnv, .Utils, DelimitedFiles, BenchmarkTools
 DotEnv.load()
+import .experimental_results
+#Nearest Neighbor-type Heuristic
 
 function nearest_neighbor_heuristic(cities_file::AbstractString)
     # load cities data
@@ -44,7 +47,4 @@ function nearest_neighbor_heuristic(cities_file::AbstractString)
 end
 
 recollected_prize, total_travel_cost, minimum_profit, I = @btime nearest_neighbor_heuristic(ENV["GENERATED_FILE"])
-println(recollected_prize)
-println(total_travel_cost)
-println(minimum_profit)
-println(I)
+results_h1 = experimental_results.experiments_table(total_travel_cost,recollected_prize)
