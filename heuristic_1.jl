@@ -42,7 +42,7 @@ function nearest_neighbor_heuristic(cities_file::AbstractString)
         able_to_visited = setdiff(able_to_visited, [added_city[1]])
     end
 
-    return recollected_prize, total_travel_cost, minimum_profit
+    return recollected_prize, total_travel_cost
 end
 
 end

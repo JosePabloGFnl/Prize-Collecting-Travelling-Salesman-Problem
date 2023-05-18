@@ -1,8 +1,7 @@
+module heuristic_2
 include("Utils.jl")
-include("experimental_results.jl")
 using DotEnv, .Utils, DelimitedFiles, BenchmarkTools
 DotEnv.load()
-import .experimental_results
 #Cheapest Insertion-type Heuristic
 
 function calculate_distances(cities, added_city, I)
@@ -57,8 +56,7 @@ function cheapest_insertion_heuristic(cities_file::AbstractString)
         able_to_visited = setdiff(cities[:, 1], I)
 
     end
-    return recollected_prize, total_travel_cost, minimum_profit, I
+    return recollected_prize, total_travel_cost
 end
 
-recollected_prize, total_travel_cost, minimum_profit, I = @btime cheapest_insertion_heuristic(ENV["GENERATED_FILE"])
-results_h2 = experimental_results.experiments_table(total_travel_cost,recollected_prize)
+end
