@@ -2,9 +2,17 @@
  
 This repo is focused on solving the prize collecting travelling salesman problem with two constructive heuristics.
 
+For the inputs used in the heuristics, a file names genetaor.jl is executed with respective parameters to generate a set of cities.
+
 The one shown in the heuristic_1.jl file is based on a Nearest Neighbor-type approach.
 
 As for the one in the heuristic_2.jl file is based the Cheapest Insertion heuristic.
+
+Both heuristics use Utils.jl to calculate the minimum profit to be used in the while loop.
+
+Afterwards, experimental_results.jl is executed to store the results into a dataframe.
+
+This is all executed n times for the given iterations.
 
 The parameters used for x and y axis positions as well as prizes were based on the following paper:
 
