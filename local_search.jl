@@ -5,9 +5,15 @@ DotEnv.load()
 
 function node_swap(cities_file::AbstractString)
     # load cities data
-    cities = readdlm(cities_file, '\t', Int64)
-    I = convert(Array, cities[1, :])
-    cities = cities[setdiff(1:end, 1), :]
+    cities = readdlm(cities_file, '\t', header=false)
+    # Extract the header row as an array
+    I = convert(Vector{Int64}, cities[1, :])
+
+    # Extract the float value from the second row
+    total_travel_cost = cities[2]
+
+    # Create a DataFrame from the remaining rows
+    cities = cities[setdiff(1:end, [1,2]), :]
     minimum_profit = calculate_minimum_profit(cities)
     # calculate distances between all pairs of cities
     n = size(cities, 1)
