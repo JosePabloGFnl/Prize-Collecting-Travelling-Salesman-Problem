@@ -25,6 +25,7 @@ function node_swap(cities_file::AbstractString)
     while (Improve = true)
         last = I
         city_to_remove = rand(I)
+        city_to_add = rand(setdiff(cities[:, 1], I))
     end
 
 end
