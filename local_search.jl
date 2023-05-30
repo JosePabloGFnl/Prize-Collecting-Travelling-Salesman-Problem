@@ -11,9 +11,10 @@ function node_swap(cities_file::AbstractString)
 
     # Extract the float value from the second row
     total_travel_cost = cities[2]
+    recollected_prize = cities[3]
 
     # Create a DataFrame from the remaining rows
-    cities = cities[setdiff(1:end, [1,2]), :]
+    cities = cities[setdiff(1:end, [1,2,3]), :]
     minimum_profit = calculate_minimum_profit(cities)
 
     # calculate distances between all pairs of cities
@@ -46,8 +47,10 @@ function node_swap(cities_file::AbstractString)
         end
 
         # Update the tour_travel_cost variable
-        tour_travel_cost = total_travel_cost - (dist_mat[city_to_remove[1], prev_city] + dist_mat[city_to_remove[1], next_city])
-        tour_travel_cost = tour_travel_cost + (dist_mat[city_to_add[1], prev_city] + dist_mat[city_to_add[1], next_city])
+        new_travel_cost = total_travel_cost - (dist_mat[city_to_remove[1], prev_city] + dist_mat[city_to_remove[1], next_city])
+        new_travel_cost = new_travel_cost + (dist_mat[city_to_add[1], prev_city] + dist_mat[city_to_add[1], next_city])
+
+        new_prize = recollected_prize - city_to_remove[4] + city_to_add[4]
 
     end
 
