@@ -28,8 +28,26 @@ function node_swap(cities_file::AbstractString)
         city_to_add = cities[rand(setdiff(cities[:, 1], I)), :]
         I = replace(last, city_to_remove[1] => city_to_add[1])
 
-        tour_travel_cost = total_travel_cost - ((dist_mat[city_to_remove[1], cities[last[city_to_remove[1]-1]]]) + (dist_mat[city_to_remove[1], cities[last[city_to_remove[1]+1]]]))
-        tour_travel_cost = tour_travel_cost + (dist_mat[city_to_add[1], cities[last[city_to_remove[1]-1]]] + dist_mat[city_to_add[1], cities[last[city_to_remove[1]+1]]])
+        
+        # Calculate the indices of the city to remove and add
+        idx = findall(x -> x == city_to_remove[1], last)
+
+        # Check if the city to remove is at the beginning or end of the tour
+        if idx[1] == 1
+            prev_city = last[end]
+        else
+            prev_city = last[idx[1] - 1]
+        end
+
+        if idx[end] == length(last)
+            next_city = last[1]
+        else
+            next_city = last[idx[end] + 1]
+        end
+
+        # Update the tour_travel_cost variable
+        tour_travel_cost = total_travel_cost - (dist_mat[city_to_remove[1], prev_city] + dist_mat[city_to_remove[1], next_city])
+        tour_travel_cost = tour_travel_cost + (dist_mat[city_to_add[1], prev_city] + dist_mat[city_to_add[1], next_city])
 
     end
 
