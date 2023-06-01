@@ -23,7 +23,7 @@ function node_swap(cities_file::AbstractString)
     
     Improve = true
 
-    while (Improve = true)
+    while (Improve == true)
         last = copy(I)
         city_to_remove = cities[rand(I), :]
         city_to_add = cities[rand(setdiff(cities[:, 1], I)), :]
@@ -51,6 +51,14 @@ function node_swap(cities_file::AbstractString)
         new_travel_cost = new_travel_cost + (dist_mat[city_to_add[1], prev_city] + dist_mat[city_to_add[1], next_city])
 
         new_prize = recollected_prize - city_to_remove[4] + city_to_add[4]
+
+        if (total_travel_cost > new_travel_cost) && (new_prize >=minimum_profit)
+            Improve = true
+            total_travel_cost = new_travel_cost
+            recollected_prize = new_prize
+        else
+            Improve = false
+        end
 
     end
 
