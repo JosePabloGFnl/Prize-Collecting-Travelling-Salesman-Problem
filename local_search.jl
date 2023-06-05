@@ -22,28 +22,29 @@ function node_swap(cities_file::AbstractString)
     dist_mat = sqrt.(sum((reshape(cities[:, 2:3], 1, n, 2) .- reshape(cities[:, 2:3], n, 1, 2)).^2, dims=3)) 
     
     Improve = true
+    last_tour = []
 
     while (Improve == true)
-        last = copy(I)
+        last_tour = copy(I)
         city_to_remove = cities[rand(I), :]
         city_to_add = cities[rand(setdiff(cities[:, 1], I)), :]
-        I = replace(last, city_to_remove[1] => city_to_add[1])
+        I = replace(last_tour, city_to_remove[1] => city_to_add[1])
 
         
         # Calculate the indices of the city to remove and add
-        idx = findall(x -> x == city_to_remove[1], last)
+        idx = findall(x -> x == city_to_remove[1], last_tour)
 
         # Check if the city to remove is at the beginning or end of the tour
         if idx[1] == 1
-            prev_city = last[end]
+            prev_city = last_tour[end]
         else
-            prev_city = last[idx[1] - 1]
+            prev_city = last_tour[idx[1] - 1]
         end
 
-        if idx[end] == length(last)
-            next_city = last[1]
+        if idx[end] == length(last_tour)
+            next_city = last_tour[1]
         else
-            next_city = last[idx[end] + 1]
+            next_city = last_tour[idx[end] + 1]
         end
 
         # Update the tour_travel_cost variable
@@ -62,8 +63,8 @@ function node_swap(cities_file::AbstractString)
 
     end
 
+    return last_tour
+
 end
 
-cities, I = node_swap(ENV["GENERATED_FILE"])
-println(cities)
-println(I)
+last_tour = node_swap(ENV["GENERATED_FILE"])
