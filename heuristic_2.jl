@@ -1,6 +1,7 @@
 module heuristic_2
 include("Utils.jl")
-using DotEnv, .Utils, DelimitedFiles, BenchmarkTools
+include("local_search.jl")
+using DotEnv, .Utils, DelimitedFiles, BenchmarkTools, .local_search
 DotEnv.load()
 #Cheapest Insertion-type Heuristic
 
@@ -56,7 +57,10 @@ function cheapest_insertion_heuristic(cities_file::AbstractString)
         able_to_visited = setdiff(cities[:, 1], I)
 
     end
-    return recollected_prize, total_travel_cost
+
+    improved_travel_cost = local_search.node_swap(cities_file, total_travel_cost, recollected_prize, I)
+
+    return recollected_prize, total_travel_cost, improved_travel_cost
 end
 
 end

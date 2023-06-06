@@ -1,20 +1,13 @@
+module local_search
 include("Utils.jl")
 using DotEnv, .Utils, DelimitedFiles
 DotEnv.load()
 #Nearest Neighbor-type Heuristic
 
-function node_swap(cities_file::AbstractString)
+function node_swap(cities_file::AbstractString, total_travel_cost::Float64, recollected_prize::Int, I::Vector{Int64})
     # load cities data
-    cities = readdlm(cities_file, '\t', header=false)
-    # Extract the header row as an array
-    I = convert(Vector{Int64}, cities[1, :])
+    cities = readdlm(cities_file, '\t', Int64)
 
-    # Extract the float value from the second row
-    total_travel_cost = cities[2]
-    recollected_prize = cities[3]
-
-    # Create a DataFrame from the remaining rows
-    cities = cities[setdiff(1:end, [1,2,3]), :]
     minimum_profit = calculate_minimum_profit(cities)
 
     # calculate distances between all pairs of cities
@@ -22,7 +15,7 @@ function node_swap(cities_file::AbstractString)
     dist_mat = sqrt.(sum((reshape(cities[:, 2:3], 1, n, 2) .- reshape(cities[:, 2:3], n, 1, 2)).^2, dims=3)) 
     
     Improve = true
-    last_tour = []
+    new_travel_cost = 0
 
     while (Improve == true)
         last_tour = copy(I)
@@ -68,8 +61,8 @@ function node_swap(cities_file::AbstractString)
 
     end
 
-    return last_tour
+    return new_travel_cost
 
 end
 
-last_tour = node_swap(ENV["GENERATED_FILE"])
+end
