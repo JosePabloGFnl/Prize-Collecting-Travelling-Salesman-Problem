@@ -27,7 +27,12 @@ function node_swap(cities_file::AbstractString)
     while (Improve == true)
         last_tour = copy(I)
         city_to_remove = cities[rand(I), :]
-        city_to_add = cities[rand(setdiff(cities[:, 1], I)), :]
+
+        radius = parse(Float64, ENV["RADIUS"])
+        cities_within_radius = findall(dist_mat[city_to_remove[1], :] .<= radius)
+
+        city_to_add = cities[rand(setdiff(cities_within_radius, I)), :]
+     
         I = replace(last_tour, city_to_remove[1] => city_to_add[1])
 
         
