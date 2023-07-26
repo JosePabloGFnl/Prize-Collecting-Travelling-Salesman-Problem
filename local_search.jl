@@ -4,6 +4,17 @@ using DotEnv, .Utils, DelimitedFiles
 DotEnv.load()
 #Nearest Neighbor-type Heuristic
 
+function calculate_radius(cities::Matrix)
+    n = size(cities, 1)
+    alpha=parse(Float64, ENV["ALPHA"])
+    min_x = minimum(cities[:, 2])
+    max_x = maximum(cities[:, 2])
+    min_y = minimum(cities[:, 3])
+    max_y = maximum(cities[:, 3])
+    return Int(round((n*alpha)*((min_x+max_x)+(min_x+max_x))/4))
+end
+
+
 function node_swap(cities_file::AbstractString, total_travel_cost::Float64, recollected_prize::Int, I::Vector{Int64})
     # load cities data
     cities = readdlm(cities_file, '\t', Int64)
@@ -21,7 +32,7 @@ function node_swap(cities_file::AbstractString, total_travel_cost::Float64, reco
         last_tour = copy(I)
         city_to_remove = cities[rand(I), :]
 
-        radius = parse(Float64, ENV["RADIUS"])
+        radius = calculate_radius(cities)
         cities_within_radius = findall(dist_mat[city_to_remove[1], :] .<= radius)
 
         city_to_add = cities[rand(setdiff(cities_within_radius, I)), :]
