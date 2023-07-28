@@ -1,21 +1,17 @@
 module local_search
 include("Utils.jl")
-using DotEnv, .Utils, DelimitedFiles
+using DotEnv, .Utils, DelimitedFiles, Statistics
 DotEnv.load()
 #Nearest Neighbor-type Heuristic
 
-function calculate_radius(cities::Matrix)
+function calculate_radius(city_to_remove::Vector, cities::Matrix, dist_mat::Array)
     n = size(cities, 1)
     alpha=parse(Float64, ENV["ALPHA"])
-    min_x = minimum(cities[:, 2])
-    max_x = maximum(cities[:, 2])
-    min_y = minimum(cities[:, 3])
-    max_y = maximum(cities[:, 3])
-    return Int(round((n*alpha)*((min_x+max_x)+(min_x+max_x))/4))
+    mean = Statistics.mean(dist_mat[city_to_remove[1]])
+    return Int(round((n*alpha)*(mean)))
 end
 
-
-function node_swap(cities_file::AbstractString, total_travel_cost::Float64, recollected_prize::Int, I::Vector{Int64})
+function node_swap(cities_file::AbstractString, total_travel_cost::Float64, recollected_prize::Int, I::Array)
     # load cities data
     cities = readdlm(cities_file, '\t', Int64)
 
@@ -30,9 +26,9 @@ function node_swap(cities_file::AbstractString, total_travel_cost::Float64, reco
 
     while (Improve == true)
         last_tour = copy(I)
-        city_to_remove = cities[rand(I), :]
+        city_to_remove = cities[rand(I[I .!= 1]), :]
 
-        radius = calculate_radius(cities)
+        radius = calculate_radius(city_to_remove, cities, dist_mat)
         cities_within_radius = findall(dist_mat[city_to_remove[1], :] .<= radius)
 
         city_to_add = cities[rand(setdiff(cities_within_radius, I)), :]
