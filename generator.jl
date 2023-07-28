@@ -1,5 +1,5 @@
 module generator
-using DataFrames,DotEnv, DelimitedFiles
+using DataFrames, DotEnv, DelimitedFiles
 DotEnv.load()
 
 function instance_generator(iteration::Int)

@@ -6,9 +6,9 @@ DotEnv.load()
 
 function calculate_radius(city_to_remove::Vector, cities::Matrix, dist_mat::Array)
     n = size(cities, 1)
-    alpha=parse(Float64, ENV["ALPHA"])
+    gamma=parse(Float64, ENV["GAMMA"])
     mean = Statistics.mean(dist_mat[city_to_remove[1]])
-    return Int(round((n*alpha)*(mean)))
+    return (round((gamma)*(mean))/sqrt(n))
 end
 
 function node_swap(cities_file::AbstractString, total_travel_cost::Float64, recollected_prize::Int, I::Array)
@@ -31,7 +31,16 @@ function node_swap(cities_file::AbstractString, total_travel_cost::Float64, reco
         radius = calculate_radius(city_to_remove, cities, dist_mat)
         cities_within_radius = findall(dist_mat[city_to_remove[1], :] .<= radius)
 
-        city_to_add = cities[rand(setdiff(cities_within_radius, I)), :]
+        # Filter out cities that are already in the tour
+        cities_to_add_candidates = setdiff(cities_within_radius, I)
+
+        # Check if there are cities outside the tour within the radius
+        if isempty(cities_to_add_candidates)
+            Improve = false
+            continue  # Continue the loop without making any changes
+        end
+
+        city_to_add = cities[rand(cities_to_add_candidates), :]
      
         I = replace(last_tour, city_to_remove[1] => city_to_add[1])
 
@@ -68,7 +77,7 @@ function node_swap(cities_file::AbstractString, total_travel_cost::Float64, reco
 
     end
 
-    return new_travel_cost
+    return total_travel_cost
 
 end
 
