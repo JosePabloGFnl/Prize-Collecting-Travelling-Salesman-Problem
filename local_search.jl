@@ -8,7 +8,7 @@ function calculate_radius(city_to_remove::Vector, cities::Matrix, dist_mat::Arra
     n = size(cities, 1)
     gamma=parse(Float64, ENV["GAMMA"])
     mean = Statistics.mean(dist_mat[city_to_remove[1]])
-    return (round((gamma)*(mean))/sqrt(n))
+    return (round((gamma)*(mean)))
 end
 
 function node_swap(cities_file::AbstractString, total_travel_cost::Float64, recollected_prize::Int, I::Array)
@@ -28,7 +28,8 @@ function node_swap(cities_file::AbstractString, total_travel_cost::Float64, reco
         last_tour = copy(I)
         city_to_remove = cities[rand(I[I .!= 1]), :]
 
-        radius = calculate_radius(city_to_remove, cities, dist_mat)
+        #radius = calculate_radius(city_to_remove, cities, dist_mat)
+        radius = 100
         cities_within_radius = findall(dist_mat[city_to_remove[1], :] .<= radius)
 
         # Filter out cities that are already in the tour
