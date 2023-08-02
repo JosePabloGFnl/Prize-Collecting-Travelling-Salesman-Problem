@@ -31,15 +31,16 @@ GAMMA=11
 ITERATIONS=20
 ```
 
-## Alpha values
+### Alpha & Gamma
 
-For each amount of cities used in the experiments, here are the values for Alpha in each respective instance specification.
+For each amount of cities used in the experiments, here are the values for Alpha and Gamma in each respective instance specification.
+Alpha is used for the minimum profit calculation in each constructive heuristic while Gamma is used for radius calculation in the local search method.
 
-| # of cities  | Alpha |
-| ------------- | ------------- |
-| 60  | .3  |
-| 400  | .6  |
-| 5000  | .9  |
+| # of cities  | Alpha | Gamma |
+| ------------- | ------------- | ------------- |
+| 60  | .3  | 12  |
+| 400  | .6  | 8  |
+| 5000  | .9  | 4  |
 
 ## References
 
