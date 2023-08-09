@@ -16,4 +16,4 @@ for i in 1:iterations
     global(results) = experimental_results.experiments_table(i, total_travel_cost_h1, recollected_prize_h1, improved_travel_cost_h1, total_travel_cost_h2, recollected_prize_h2, improved_travel_cost_h2)
 end
 
-writedlm("results.txt", Matrix(results))
+writedlm(ENV["RESULTS"], Matrix(results))

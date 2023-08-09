@@ -15,7 +15,7 @@ function instance_generator(iteration::Int)
                 prize = rand(min_prize:max_prize,cities)
                 )
 
-    filename = ("cities" * string(iteration) * ".txt")
+    filename = (ENV["GENERATED_FILE"] * string(iteration) * ".txt")
     writedlm(filename, Matrix(df))
 
     return filename
