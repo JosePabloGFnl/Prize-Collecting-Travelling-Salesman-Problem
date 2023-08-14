@@ -19,33 +19,33 @@ Afterwards, experimental_results.jl is executed to store the results into a data
 This is all executed n times for the given iterations.
 
 ### Environmental variables
+
+The parameters used for the x and y axis positions as well as prizes were based on the proposition by Dell’Amico, M. et. al.:
+
 ``` textplain
 GENERATED_FILE="cities"
 MIN_AXIS=0
 MIN_PRIZE=0
 MAX_AXIS=1000
 MAX_PRIZE=100
-QUANTITY_CITIES=400
-ALPHA=.6
-GAMMA=11
+QUANTITY_CITIES=60
+ALPHA=.3
 ITERATIONS=20
 ```
 
-### Alpha & Gamma
+### Alpha
 
-For each amount of cities used in the experiments, here are the values for Alpha and Gamma in each respective instance specification.
-Alpha is used for the minimum profit calculation in each constructive heuristic while Gamma is used for radius calculation in the local search method.
+For each amount of cities used in the experiments, here are the values for Alpha in each respective instance specification.
+Alpha is used for the minimum profit calculation in each constructive heuristic.
 
-| # of cities  | Alpha | Gamma |
-| ------------- | ------------- | ------------- |
-| 60  | .3  | 12  |
-| 400  | .6  | 8  |
-| 5000  | .9  | 4  |
+| # of cities  | Alpha |
+| ------------- | ------------- |
+| 60  | .3  |
+| 400  | .6  |
+| 5000  | .9  |
 
 ## References
 
-The parameters used for x and y axis positions as well as prizes were based on the following paper:
-
-Dell’Amico, M., Maffioli, F. & Sciomachen, A. A Lagrangian heuristic for the
+[1] Dell’Amico, M., Maffioli, F. & Sciomachen, A. A Lagrangian heuristic for the
 Prize Collecting Travelling Salesman Problem. Annals of Operations Research
 81, 289–306 (1998). https://doi.org/10.1023/A:1018961208614
