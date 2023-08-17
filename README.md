@@ -18,6 +18,13 @@ Afterwards, experimental_results.jl is executed to store the results into a data
 
 This is all executed n times for the given iterations.
 
+### Previous configuration
+
+To install any missing libraries, execute the following lines of code at the beginning of the procedure:
+```
+import Pkg; Pkg.add("library")
+```
+
 ### Environmental variables
 
 The parameters used for the x and y axis positions as well as prizes were based on the proposition by Dell’Amico, M. et. al.:
