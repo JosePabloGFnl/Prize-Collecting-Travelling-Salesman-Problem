@@ -1,6 +1,6 @@
 module local_search
-include("Utils.jl")
-using DotEnv, .Utils, DelimitedFiles, Statistics
+include("minimum_profit.jl")
+using DotEnv, .minimum_profit, DelimitedFiles, Statistics
 DotEnv.load()
 #Nearest Neighbor-type Heuristic
 

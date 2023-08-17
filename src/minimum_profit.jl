@@ -1,4 +1,4 @@
-module Utils
+module minimum_profit
 using DotEnv
 DotEnv.load()
 
@@ -12,4 +12,4 @@ function calculate_minimum_profit(cities::Matrix)
     return Int(round((n*alpha)*(min_prize+max_prize)/2))
 end
 
-end # module
+end

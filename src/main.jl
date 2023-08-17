@@ -1,4 +1,3 @@
-include("Utils.jl")
 include("generator.jl")
 include("heuristic_1.jl")
 include("heuristic_2.jl")
