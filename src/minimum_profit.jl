@@ -1,5 +1,5 @@
 module minimum_profit
-using DotEnv
+using DotEnv, Statistics
 DotEnv.load()
 
 export calculate_minimum_profit
@@ -7,9 +7,8 @@ export calculate_minimum_profit
 function calculate_minimum_profit(cities::Matrix)
     n = size(cities, 1)
     alpha=parse(Float64, ENV["ALPHA"])
-    min_prize = minimum(cities[:, 4])
-    max_prize = maximum(cities[:, 4])
-    return Int(round((n*alpha)*(min_prize+max_prize)/2))
+    mean = Statistics.mean(cities[:, 4])
+    return Int(round((n*alpha)*(mean)))
 end
 
 end
