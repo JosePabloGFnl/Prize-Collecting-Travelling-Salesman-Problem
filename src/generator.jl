@@ -1,5 +1,6 @@
 module generator
-using DataFrames, DotEnv, DelimitedFiles
+include("graph_results.jl")
+using DataFrames, DotEnv, DelimitedFiles, .graph_results
 DotEnv.load()
 
 function instance_generator(iteration::Int)
@@ -17,6 +18,8 @@ function instance_generator(iteration::Int)
 
     filename = (ENV["GENERATED_FILE"] * string(iteration) * ".txt")
     writedlm(filename, Matrix(df))
+
+    graph_results.graph_cities(df)
 
     return filename
 
