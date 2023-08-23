@@ -1,7 +1,8 @@
 module heuristic_1
 include("minimum_profit.jl")
 include("local_search.jl")
-using DotEnv, .minimum_profit, DelimitedFiles, BenchmarkTools, .local_search
+include("graph_results.jl")
+using DotEnv, .minimum_profit, DelimitedFiles, BenchmarkTools, .local_search, .graph_results
 DotEnv.load()
 #Nearest Neighbor-type Heuristic
 
@@ -42,6 +43,8 @@ function nearest_neighbor_heuristic(cities_file::AbstractString)
         push!(I, added_city[1])
         able_to_visited = setdiff(able_to_visited, [added_city[1]])
     end
+
+    plot = graph_results.graph_cities(cities_file)
 
     improved_travel_cost = local_search.node_swap(cities_file, total_travel_cost, recollected_prize, I)
 
