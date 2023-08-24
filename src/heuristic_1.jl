@@ -44,7 +44,7 @@ function nearest_neighbor_heuristic(cities_file::AbstractString)
         able_to_visited = setdiff(able_to_visited, [added_city[1]])
     end
 
-    plot = graph_results.graph_cities(cities_file)
+    graph_results.graph_cities(cities, I)
 
     improved_travel_cost = local_search.node_swap(cities_file, total_travel_cost, recollected_prize, I)
 
