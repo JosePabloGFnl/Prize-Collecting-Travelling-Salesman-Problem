@@ -19,10 +19,12 @@ function node_swap(cities_file::AbstractString, total_travel_cost::Float64, reco
     n = size(cities, 1)
     dist_mat = sqrt.(sum((reshape(cities[:, 2:3], 1, n, 2) .- reshape(cities[:, 2:3], n, 1, 2)).^2, dims=3)) 
     
-    Improve = true
+    Improve = false
     new_travel_cost = 0
 
-    while (Improve == true)
+    able_to_replace = copy(I)
+
+    while (Improve == false && !isempty(able_to_replace))
         last_tour = copy(I)
         city_to_remove = cities[rand(I[I .!= 1]), :]
 
@@ -39,9 +41,6 @@ function node_swap(cities_file::AbstractString, total_travel_cost::Float64, reco
         end
 
         city_to_add = cities[rand(cities_to_add_candidates), :]
-     
-        I = replace(last_tour, city_to_remove[1] => city_to_add[1])
-
         
         # Calculate the indices of the city to remove and add
         idx = findall(x -> x == city_to_remove[1], last_tour)
@@ -71,6 +70,7 @@ function node_swap(cities_file::AbstractString, total_travel_cost::Float64, reco
             recollected_prize = new_prize
         else
             Improve = false
+            able_to_replace = setdiff(able_to_replace, city_to_remove[1])
         end
 
     end
