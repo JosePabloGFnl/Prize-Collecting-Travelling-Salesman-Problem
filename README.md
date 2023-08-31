@@ -20,6 +20,24 @@ This is all executed n times for the given iterations.
 
 ### Previous configuration
 
+The following Julia version must be installed for this code to work:
+
+```
+julia v"1.9.3"
+```
+
+And the following libraries must be installed and added:
+
+```
+- DotEnv v0.3.1
+- DelimitedFiles v1.9.1
+- DataFrames v1.6.1
+- Statistics v1.9.0
+- Gadfly v1.4.0
+- Cairo v1.0.5
+- Fontconfig v0.4.1
+```
+
 To install any missing libraries, execute the following lines of code at the beginning of the procedure:
 ```
 import Pkg; Pkg.add("library")
