@@ -22,11 +22,11 @@ function node_swap(cities_file::AbstractString, total_travel_cost::Float64, reco
     Improve = false
     new_travel_cost = 0
 
-    able_to_replace = copy(I)
+    able_to_replace = copy((I[I .!= 1]))
 
-    while (Improve == false && !isempty(able_to_replace))
+    while (Improve == false && !isempty(able_to_replace) && !isempty(able_to_replace))
         last_tour = copy(I)
-        city_to_remove = cities[rand(able_to_replace[able_to_replace .!= 1]), :]
+        city_to_remove = cities[rand(able_to_replace), :]
 
         radius = calculate_radius(city_to_remove, dist_mat)
         cities_within_radius = findall(dist_mat[city_to_remove[1], :] .<= radius)
@@ -34,7 +34,6 @@ function node_swap(cities_file::AbstractString, total_travel_cost::Float64, reco
         # Filter out cities that are already in the tour
         cities_to_add_candidates = setdiff(cities_within_radius, I)
 
-        # Check if there are cities outside the tour within the radius
         if isempty(cities_to_add_candidates)
             break  # stop the loop
         end
@@ -70,10 +69,6 @@ function node_swap(cities_file::AbstractString, total_travel_cost::Float64, reco
         else
             Improve = false
             able_to_replace = setdiff(able_to_replace, city_to_remove[1])
-        end
-
-        if all(able_to_replace .== 1)
-            break  # End the loop if able_to_replace only contains the value 1
         end
 
     end
