@@ -2,7 +2,7 @@ module heuristic_1
 include("minimum_profit.jl")
 include("local_search.jl")
 include("graph_results.jl")
-using DotEnv, .minimum_profit, DelimitedFiles, BenchmarkTools, .local_search, .graph_results
+using DotEnv, .minimum_profit, DelimitedFiles, .local_search, .graph_results
 DotEnv.load()
 #Nearest Neighbor-type Heuristic
 

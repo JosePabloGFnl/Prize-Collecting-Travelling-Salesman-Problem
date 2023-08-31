@@ -1,7 +1,7 @@
 module heuristic_2
 include("minimum_profit.jl")
 include("local_search.jl")
-using DotEnv, .minimum_profit, DelimitedFiles, BenchmarkTools, .local_search
+using DotEnv, .minimum_profit, DelimitedFiles, .local_search
 DotEnv.load()
 #Cheapest Insertion-type Heuristic
 
