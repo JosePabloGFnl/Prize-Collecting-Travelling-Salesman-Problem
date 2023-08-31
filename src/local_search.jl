@@ -25,7 +25,6 @@ function node_swap(cities_file::AbstractString, total_travel_cost::Float64, reco
     able_to_replace = copy((I[I .!= 1]))
 
     while (Improve == false && !isempty(able_to_replace))
-        last_tour = copy(I)
         city_to_remove = cities[rand(able_to_replace), :]
 
         radius = calculate_radius(city_to_remove, dist_mat)
@@ -41,19 +40,19 @@ function node_swap(cities_file::AbstractString, total_travel_cost::Float64, reco
         city_to_add = cities[rand(cities_to_add_candidates), :]
         
         # Calculate the indices of the city to remove and add
-        idx = findall(x -> x == city_to_remove[1], last_tour)
+        idx = findall(x -> x == city_to_remove[1], I)
 
         # Check if the city to remove is at the beginning or end of the tour
         if idx[1] == 1
-            prev_city = last_tour[end]
+            prev_city = I[end]
         else
-            prev_city = last_tour[idx[1] - 1]
+            prev_city = I[idx[1] - 1]
         end
 
-        if idx[end] == length(last_tour)
-            next_city = last_tour[1]
+        if idx[end] == length(I)
+            next_city = I[1]
         else
-            next_city = last_tour[idx[end] + 1]
+            next_city = I[idx[end] + 1]
         end
 
         # Update the tour_travel_cost variable
