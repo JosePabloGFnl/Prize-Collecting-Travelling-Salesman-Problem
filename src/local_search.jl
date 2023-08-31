@@ -24,7 +24,7 @@ function node_swap(cities_file::AbstractString, total_travel_cost::Float64, reco
 
     able_to_replace = copy((I[I .!= 1]))
 
-    while (Improve == false && !isempty(able_to_replace) && !isempty(able_to_replace))
+    while (Improve == false && !isempty(able_to_replace))
         last_tour = copy(I)
         city_to_remove = cities[rand(able_to_replace), :]
 
