@@ -14,7 +14,10 @@ Both heuristics use Utils.jl to calculate the minimum profit to be used in the w
 
 A local search swap-move is executed in local_search.jl. This is applied to both heuristics to try to improve the given results.
 
-Afterwards, experimental_results.jl is executed to store the results into a dataframe.
+Afterwards, experimental_results.jl is executed to store the results into a dataframe which is exported into a .txt file named `results.txt`. The columns in said dataframe are the following:
+
+| Iteration | H1 Total Travel Cost | H1 Recollected Prize | H1 Prize/Cost Ratio | H1 Local Search Total Travel Cost | Improved? H1 | H2 Total Travel Cost | H2 Recollected Prize | H2 Prize/Cost Ratio | H2 Local Search Total Travel Cost | Improved? H2 |
+| ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- |
 
 This is all executed n times for the given iterations.
 
