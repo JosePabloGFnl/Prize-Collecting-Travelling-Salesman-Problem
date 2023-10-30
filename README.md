@@ -10,7 +10,7 @@ The one shown in the heuristic_1.jl file is based on a Nearest Neighbor-type app
 
 As for the one in the heuristic_2.jl file is based the Cheapest Insertion heuristic.
 
-Both heuristics use Utils.jl to calculate the minimum profit to be used in the while loop.
+Both heuristics use minimum_profit.jl to calculate the minimum profit to be used in the while loop.
 
 A local search swap-move is executed in local_search.jl. This is applied to both heuristics to try to improve the given results.
 
