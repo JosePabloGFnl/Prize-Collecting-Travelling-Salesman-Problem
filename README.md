@@ -4,7 +4,7 @@ This repo is focused on solving the prize collecting travelling salesman problem
 
 ## Procedure
 
-For the inputs used in the heuristics, a file names genetaor.jl is executed with respective parameters to generate a set of cities.
+For the inputs used in the heuristics, a file names generator.jl is executed with respective parameters to generate a set of cities.
 
 The one shown in the heuristic_1.jl file is based on a Nearest Neighbor-type approach.
 
