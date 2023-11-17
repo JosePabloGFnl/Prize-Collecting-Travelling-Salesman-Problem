@@ -2,6 +2,10 @@ using JuMP, Gurobi
 
 # Define the number of nodes (n)
 n = 5  # You can change this based on your problem
+# Define the cost matrix, weights, and threshold
+cost_matrix = [1 2 3 4 5; 6 7 8 9 10; 11 12 13 14 15; 16 17 18 19 20; 21 22 23 24 25]
+w = [2, 4, 1, 5, 3]
+w0 = 10
 
 # Create a Gurobi model
 model = Model(Gurobi.Optimizer)
