@@ -1,8 +1,8 @@
 module heuristic_1
 include("minimum_profit.jl")
 include("local_search.jl")
-include("graph_results.jl")
-using DotEnv, .minimum_profit, DelimitedFiles, .local_search, .graph_results
+include("optimizer.jl")
+using DotEnv, .minimum_profit, DelimitedFiles, .local_search, .optimizer
 DotEnv.load()
 #Nearest Neighbor-type Heuristic
 
@@ -44,11 +44,11 @@ function nearest_neighbor_heuristic(cities_file::AbstractString)
         able_to_visited = setdiff(able_to_visited, [added_city[1]])
     end
 
-    graph_results.graph_cities(cities, I)
+    gurobi_result = optimizer.gurobi_optimizer(cities[1:end, 1], minimum_profit, dist_mat)
 
     improved_travel_cost = local_search.node_swap(cities_file, total_travel_cost, recollected_prize, I)
 
-    return recollected_prize, total_travel_cost, improved_travel_cost
+    return recollected_prize, total_travel_cost, improved_travel_cost, gurobi_result
 end
 
 end
