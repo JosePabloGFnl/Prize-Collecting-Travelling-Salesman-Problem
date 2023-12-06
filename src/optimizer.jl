@@ -33,13 +33,6 @@ function gurobi_optimizer(I::Array, minimum_profit::Int64, dist_mat::Array{Float
     # Solve the model
     optimize!(model)
 
-    # Print the solution
-    println("Objective value: ", objective_value(model))
-    println("Optimal x:")
-    println(value.(x))
-    println("Optimal y:")
-    println(value.(y))
-
     return objective_value(model)
 end
 
