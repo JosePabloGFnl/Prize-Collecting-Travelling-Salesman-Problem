@@ -33,6 +33,12 @@ function gurobi_optimizer(I::Array, minimum_profit::Int64, dist_mat::Array{Float
     # Solve the model
     optimize!(model)
 
+    # Check the optimization status
+    if termination_status(model) == MOI.INFEASIBLE
+        println("The model is infeasible.")
+        return NaN  # or another appropriate value to indicate infeasibility
+    end
+
     return objective_value(model)
 end
 
