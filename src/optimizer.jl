@@ -1,7 +1,7 @@
 module optimizer
 using JuMP, Gurobi
 
-function gurobi_optimizer(I::Array, minimum_profit::Int64, dist_mat::Array{Float64})
+function gurobi_optimizer(recollected_prize::Int64, I::Array, minimum_profit::Int64, dist_mat::Array{Float64})
     # Define the number of nodes (n)
     n = size(I, 1)
 
@@ -38,8 +38,14 @@ function gurobi_optimizer(I::Array, minimum_profit::Int64, dist_mat::Array{Float
         println("The model is infeasible.")
         return NaN  # or another appropriate value to indicate infeasibility
     end
+    
+    # Get the optimal value
+    optimal_value = objective_value(model)
 
-    return objective_value(model)
+    # Calculate the optimality gap
+    optimality_gap = (recollected_prize - optimal_value) / optimal_value * 100
+
+    return optimality_gap
 end
 
 end
