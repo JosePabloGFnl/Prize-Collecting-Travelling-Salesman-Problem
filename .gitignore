@@ -1,3 +1,4 @@
 *.txt
 *.png
 .env
+\.vscode
