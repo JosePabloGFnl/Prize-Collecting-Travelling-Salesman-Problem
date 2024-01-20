@@ -1,7 +1,7 @@
 module optimizer
 using JuMP, Gurobi
 
-function gurobi_optimizer(recollected_prize::Int64, I::Array, minimum_profit::Int64, dist_mat::Array{Float64})
+function gurobi_optimizer(total_travel_cost::Float64, I::Array, minimum_profit::Int64, dist_mat::Array{Float64})
     # Define the number of nodes (n)
     n = size(I, 1)
 
@@ -43,9 +43,9 @@ function gurobi_optimizer(recollected_prize::Int64, I::Array, minimum_profit::In
     optimal_value = objective_value(model)
 
     # Calculate the optimality gap
-    optimality_gap = (recollected_prize - optimal_value) / optimal_value * 100
+    optimality_gap = ((total_travel_cost - optimal_value) / total_travel_cost) * 100
 
-    return optimality_gap
+    return optimal_value, optimality_gap
 end
 
 end
