@@ -44,11 +44,11 @@ function nearest_neighbor_heuristic(cities_file::AbstractString)
         able_to_visited = setdiff(able_to_visited, [added_city[1]])
     end
 
-    optimality_gap = optimizer.gurobi_optimizer(recollected_prize,cities[1:end, 1], minimum_profit, dist_mat)
+    optimal_value, optimality_gap = optimizer.gurobi_optimizer(total_travel_cost,cities[1:end, 1], minimum_profit, dist_mat)
 
     improved_travel_cost = local_search.node_swap( cities_file, total_travel_cost, recollected_prize, I)
 
-    return recollected_prize, total_travel_cost, improved_travel_cost, optimality_gap
+    return recollected_prize, total_travel_cost, improved_travel_cost, optimal_value, optimality_gap
 end
 
 end
