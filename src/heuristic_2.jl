@@ -58,8 +58,11 @@ function cheapest_insertion_heuristic(cities_file::AbstractString)
         able_to_visited = setdiff(cities[:, 1], I)
 
     end
+    # Assuming that the fourth column of the cities DataFrame contains the prizes
+    prizes = cities[:, 4]
 
-    optimal_value, optimality_gap = optimizer.gurobi_optimizer(total_travel_cost, cities[1:end, 1], minimum_profit, dist_mat)
+    # Call the gurobi_optimizer function
+    optimal_value, optimality_gap = optimizer.gurobi_optimizer(dist_mat, minimum_profit, prizes, total_travel_cost)
 
     improved_travel_cost = local_search.node_swap(cities_file, total_travel_cost, recollected_prize, I)
 
