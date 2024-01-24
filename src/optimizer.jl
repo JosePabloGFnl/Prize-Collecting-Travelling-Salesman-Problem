@@ -13,7 +13,7 @@ function gurobi_optimizer(c, w0, prizes, total_travel_cost)
     @variable(model, x[1:n, 1:n], Bin)
 
     # Objective
-    @objective(model, Min, sum(c[i, j] * x[i, j] for i in 1:n for j in 1:n))
+    @objective(model, Max, sum(prizes[i] * y[i] for i in 1:n) - sum(c[i, j] * x[i, j] for i in 1:n for j in 1:n))
 
     # Constraints
     @constraint(model, [i in 1:n], sum(x[j, i] for j in setdiff(1:n, [i])) - y[i] == 0)
