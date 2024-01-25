@@ -44,6 +44,10 @@ function nearest_neighbor_heuristic(cities_file::AbstractString)
         able_to_visited = setdiff(able_to_visited, [added_city[1]])
     end
 
+    #Connecting first and last city in the tour
+    push!(I, I[1])
+    total_travel_cost += dist_mat[I[end-1], I[end]]
+
     # Assuming that the fourth column of the cities DataFrame contains the prizes
     prizes = cities[:, 4]
 
