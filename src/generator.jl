@@ -12,7 +12,8 @@ function instance_generator(iteration::Int)
     df = DataFrame(city = 1:cities, 
                 x_axis = rand(min_axis:max_axis,cities),
                 y_axis = rand(min_axis:max_axis,cities),
-                prize = rand(min_prize:max_prize,cities)
+                prize = rand(min_prize:max_prize,cities),
+                penalty = rand(min_prize:max_prize,cities)
                 )
 
     filename = (ENV["GENERATED_FILE"] * string(iteration) * ".txt")
