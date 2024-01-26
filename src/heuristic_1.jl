@@ -48,11 +48,11 @@ function nearest_neighbor_heuristic(cities_file::AbstractString)
     push!(I, I[1])
     total_travel_cost += dist_mat[I[end-1], I[end]]
 
-    # Assuming that the fourth column of the cities DataFrame contains the prizes
     prizes = cities[:, 4]
+    penalties = cities[:, 5]
 
     # Call the gurobi_optimizer function
-    optimal_value, optimality_gap = optimizer.gurobi_optimizer(dist_mat, minimum_profit, prizes, total_travel_cost)
+    optimal_value, optimality_gap = optimizer.gurobi_optimizer(dist_mat, minimum_profit, prizes, penalties, total_travel_cost)
 
     improved_travel_cost = local_search.node_swap( cities_file, total_travel_cost, recollected_prize, I)
 

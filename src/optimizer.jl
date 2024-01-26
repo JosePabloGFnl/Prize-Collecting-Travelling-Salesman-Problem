@@ -1,7 +1,7 @@
 module optimizer
 using JuMP, Gurobi
 
-function gurobi_optimizer(c, w0, prizes, total_travel_cost)
+function gurobi_optimizer(c, w0, prizes, penalties, total_travel_cost)
     # Calculate the total number of cities
     n = length(prizes)
     
@@ -13,7 +13,7 @@ function gurobi_optimizer(c, w0, prizes, total_travel_cost)
     @variable(model, x[1:n, 1:n], Bin)
 
     # Objective
-    @objective(model, Min, sum(c[i, j] * x[i, j] for i in 1:n for j in setdiff(1:n, [i])) + sum(prizes[i] * (1 - y[i]) for i in 1:n))
+    @objective(model, Min, sum(c[i, j] * x[i, j] for i in 1:n for j in setdiff(1:n, [i])) + sum(penalties[i] * (y[i]) for i in 1:n))
 
     # Constraints
     @constraint(model, [i in 1:n], sum(x[i, j] for j in setdiff(1:n, [i])) - y[i] == 0)
