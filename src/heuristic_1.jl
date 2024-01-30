@@ -23,18 +23,18 @@ function nearest_neighbor_heuristic(cities_file::AbstractString)
     total_travel_cost = 0.0
 
     # while loop that ends when all cities are visited or the minimum profit is recollected
-    #for some reason, operands & and | work as opposites in Julia
     while (!isempty(able_to_visited)) && (recollected_prize < minimum_profit)
         # selects the current city to be the point of search based on the most recently inserted one in the tour
         current_city = cities[findlast(x -> x in I, cities[:, 1]), :]
 
         # get distances between the selected city and the available cities
         distances = dist_mat[current_city[1], findall(in(able_to_visited), cities[:, 1])]
-        # calculate prize/cost ratios for the available cities
-        prize_cost_ratios = cities[able_to_visited, 4] ./ distances
+
+        # greedy function
+        travel_cost_penalties_diff = (total_travel_cost .- cities[able_to_visited, 5])
 
         # add the city with the biggest prize/cost ratio
-        added_city_idx = argmax(prize_cost_ratios)
+        added_city_idx = argmin(travel_cost_penalties_diff)
         added_city = cities[able_to_visited[added_city_idx], :]
 
         recollected_prize += added_city[4]

@@ -39,10 +39,10 @@ function cheapest_insertion_heuristic(cities_file::AbstractString)
     #for some reason, operands & and | work as opposites in Julia
     while (!isempty(able_to_visited)) && (recollected_prize < minimum_profit)
 
-        #checks the distances by coordinates between the selected city and the available
-        prize_cost_ratios = cities[able_to_visited, 4] ./ total_travel_cost
+        # greedy function
+        travel_cost_penalties_diff = (total_travel_cost .- cities[able_to_visited, 5])
 
-        added_city_idx = argmax(prize_cost_ratios)
+        added_city_idx = argmin(travel_cost_penalties_diff)
         added_city = cities[able_to_visited[added_city_idx], :]
 
         recollected_prize += added_city[4]
