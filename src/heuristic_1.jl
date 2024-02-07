@@ -31,7 +31,7 @@ function nearest_neighbor_heuristic(cities_file::AbstractString)
         distances = dist_mat[current_city[1], findall(in(able_to_visited), cities[:, 1])]
 
         # greedy function
-        travel_cost_penalties_diff = (total_travel_cost .- cities[able_to_visited, 5])
+        travel_cost_penalties_diff = (distances .- cities[able_to_visited, 5])
 
         # add the city with the biggest prize/cost ratio
         added_city_idx = argmin(travel_cost_penalties_diff)

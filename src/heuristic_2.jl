@@ -40,7 +40,7 @@ function cheapest_insertion_heuristic(cities_file::AbstractString)
     while (!isempty(able_to_visited)) && (recollected_prize < minimum_profit)
 
         # greedy function
-        travel_cost_penalties_diff = (total_travel_cost .- cities[able_to_visited, 5])
+        travel_cost_penalties_diff = cities[able_to_visited, 5] ./ total_travel_cost
 
         added_city_idx = argmin(travel_cost_penalties_diff)
         added_city = cities[able_to_visited[added_city_idx], :]
