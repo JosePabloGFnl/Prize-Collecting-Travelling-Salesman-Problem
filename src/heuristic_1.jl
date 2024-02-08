@@ -18,30 +18,29 @@ function nearest_neighbor_heuristic(cities_file::AbstractString)
 
     # variable initialization
     I = [cities[1, 1]]
-    able_to_visited = cities[2:end, 1]
     recollected_prize = cities[1, 4]
     total_travel_cost = 0.0
 
-    # while loop that ends when all cities are visited or the minimum profit is recollected
+    # Initialize able_to_visited with city IDs as keys and city data as values
+    able_to_visited = Dict(cities[i, 1] => cities[i, :] for i in 2:size(cities, 1))
+
+    # In your loop where you're building the tour
     while (!isempty(able_to_visited)) && (recollected_prize < minimum_profit)
-        # selects the current city to be the point of search based on the most recently inserted one in the tour
-        current_city = cities[findlast(x -> x in I, cities[:, 1]), :]
+        # Create a distances array mapping city IDs to distances
+        distances = Dict(city_id => dist_mat[I[end], city_id] for city_id in keys(able_to_visited))
 
-        # get distances between the selected city and the available cities
-        distances = dist_mat[current_city[1], findall(in(able_to_visited), cities[:, 1])]
+        # Calculate travel_cost_penalties_diff here, using the distances array
+        travel_cost_penalties_diff = Dict(city_id => dist - able_to_visited[city_id][5] for (city_id, dist) in distances)
 
-        # greedy function
-        travel_cost_penalties_diff = (distances .- cities[able_to_visited, 5])
-
-        # add the city with the biggest prize/cost ratio
-        added_city_idx = argmin(travel_cost_penalties_diff)
-        added_city = cities[able_to_visited[added_city_idx], :]
+        # Select the city with the minimum travel_cost_penalties_diff
+        added_city_id = argmin(travel_cost_penalties_diff)[1]
+        added_city = able_to_visited[added_city_id]
 
         recollected_prize += added_city[4]
-        total_travel_cost += distances[added_city_idx]
+        total_travel_cost += distances[added_city_id]
 
-        push!(I, added_city[1])
-        able_to_visited = setdiff(able_to_visited, [added_city[1]])
+        push!(I, added_city_id)
+        delete!(able_to_visited, added_city_id)
     end
 
     #Connecting first and last city in the tour
