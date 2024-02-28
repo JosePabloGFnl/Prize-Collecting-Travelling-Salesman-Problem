@@ -4,8 +4,9 @@ include("local_search.jl")
 include("optimizer.jl")
 using DotEnv, .minimum_profit, DelimitedFiles, .local_search, .optimizer
 DotEnv.load()
-#Cheapest Insertion-type Heuristic
+# Cheapest Insertion-type Heuristic
 
+# Function to calculate cheapest insertion of selected city into the tour
 function calculate_distances(cities, added_city, I)
     distances = [sqrt((added_city[2] - cities[I[i], 2])^2 + (added_city[3] - cities[I[i], 3])^2) +
                  sqrt((added_city[2] - cities[I[i+1], 2])^2 + (added_city[3] - cities[I[i+1], 3])^2) -
@@ -27,18 +28,18 @@ function cheapest_insertion_heuristic(cities_file::AbstractString)
     #function for minimum distance
     min_from_1 = cities[(argmin(dist_mat[2:end, 1]) + 1), 1]
 
-    total_travel_cost = (dist_mat[1, argmin(dist_mat[2:end, 1])])*2
+    # Calculate total_travel_cost as the round trip distance from city 1 to min_from_1
+    total_travel_cost = dist_mat[1, min_from_1] + dist_mat[min_from_1, 1]
 
     I = [1, min_from_1, 1]
 
-    able_to_visited = setdiff(cities[:, 1], I)
+    # Initialize able_to_visited with city IDs as keys and city data as values
+    able_to_visited = Dict(cities[i, 1] => cities[i, :] for i in 2:size(cities, 1) if cities[i, 1] != min_from_1)
 
     recollected_prize = sum(cities[in.(cities[:, 1], Ref(I)), 4])
 
     #while loop that ends when all cities are visited or the recollected prize in the tour is greater than the minimum profit
-    #for some reason, operands & and | work as opposites in Julia
     while (!isempty(able_to_visited)) && (recollected_prize < minimum_profit)
-
         # Calculate prize to total travel cost ratios for each city in able_to_visited
         prize_cost_ratios = Dict(city_id => able_to_visited[city_id][4] / total_travel_cost for city_id in keys(able_to_visited))
 
@@ -48,16 +49,13 @@ function cheapest_insertion_heuristic(cities_file::AbstractString)
 
         recollected_prize += added_city[4]
 
-        #Insertion phase
+        # Insertion phase
         distances = calculate_distances(cities, added_city, I)
-    
         # Update tour
         insert!(I, argmin(distances) + 1, added_city[1])
         total_travel_cost += distances[argmin(distances)]
-    
         # Remove city from able_to_visited set
-        able_to_visited = setdiff(cities[:, 1], I)
-
+        delete!(able_to_visited, added_city_id)
     end
 
     prizes = cities[:, 4]
