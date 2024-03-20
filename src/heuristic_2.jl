@@ -41,7 +41,7 @@ function cheapest_insertion_heuristic(cities_file::AbstractString)
     #while loop that ends when all cities are visited or the recollected prize in the tour is greater than the minimum profit
     while (!isempty(able_to_visited)) && (recollected_prize < minimum_profit)
         # Calculate prize to total travel cost ratios for each city in able_to_visited
-        prize_cost_ratios = Dict(city_id => able_to_visited[city_id][4] / total_travel_cost for city_id in keys(able_to_visited))
+        prize_cost_ratios = Dict(city_id => able_to_visited[city_id][4] / (total_travel_cost - able_to_visited[city_id][5]) for city_id in keys(able_to_visited))
 
         # Select the city with the maximum prize to total travel cost ratio
         added_city_id = argmax(prize_cost_ratios)[1]
