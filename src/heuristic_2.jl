@@ -58,6 +58,9 @@ function cheapest_insertion_heuristic(cities_file::AbstractString)
         delete!(able_to_visited, added_city_id)
     end
 
+    # Sum of Penalties into the total travel cost
+    total_travel_cost += sum(city[5] for city in values(able_to_visited))
+
     prizes = cities[:, 4]
     penalties = cities[:, 5]
 
