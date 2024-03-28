@@ -22,7 +22,7 @@ function node_swap(cities_file::AbstractString, total_travel_cost::Float64, reco
     Improve = false
     new_travel_cost = 0
 
-    able_to_replace = copy((I[I .!= 1]))
+    able_to_replace = copy((I))
 
     while (Improve == false && !isempty(able_to_replace))
         city_to_remove = cities[rand(able_to_replace), :]
