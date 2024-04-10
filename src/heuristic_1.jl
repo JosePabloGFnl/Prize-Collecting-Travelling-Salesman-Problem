@@ -49,10 +49,11 @@ function nearest_neighbor_heuristic(cities_file::AbstractString, distances::Arra
     prizes = cities[:, 2]
     penalties = cities[:, 3]
 
-    # Call the gurobi_optimizer function
-    optimal_value, optimality_gap = optimizer.gurobi_optimizer(distances, minimum_profit, prizes, penalties, total_travel_cost)
-
+    # Local Search improvement
     improved_travel_cost = local_search.node_swap(cities_file, total_travel_cost, recollected_prize, I, distances)
+
+    # Call the gurobi_optimizer function
+    optimal_value, optimality_gap = optimizer.gurobi_optimizer(distances, minimum_profit, prizes, penalties, improved_travel_cost)
 
     return recollected_prize, total_travel_cost, improved_travel_cost, optimal_value, optimality_gap
 end
