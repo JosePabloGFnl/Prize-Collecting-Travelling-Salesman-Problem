@@ -22,6 +22,9 @@ function node_swap(cities_file::AbstractString, total_travel_cost::Int64, recoll
 
     able_to_replace = copy((I))
 
+    # Time: Start
+    heuristic_start_time = time()
+
     while (Improve == false && !isempty(able_to_replace))
         city_to_remove = cities[rand(able_to_replace), :]
 
@@ -73,7 +76,12 @@ function node_swap(cities_file::AbstractString, total_travel_cost::Int64, recoll
 
     end
 
-    return total_travel_cost
+
+    # Time: End
+    heuristic_end_time = time()
+    heuristic_execution_time = heuristic_end_time - heuristic_start_time
+
+    return total_travel_cost, heuristic_execution_time
 
 end
 
