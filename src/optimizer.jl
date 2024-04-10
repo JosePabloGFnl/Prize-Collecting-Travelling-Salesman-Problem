@@ -8,6 +8,9 @@ function gurobi_optimizer(c, w0, prizes, penalties, total_travel_cost)
     # Create a model
     model = Model(Gurobi.Optimizer)
 
+    # Time: Start
+    start_time = time()
+
     # Variables
     @variable(model, y[1:n], Bin)
     @variable(model, x[1:n, 1:n], Bin)
@@ -35,7 +38,11 @@ function gurobi_optimizer(c, w0, prizes, penalties, total_travel_cost)
     # Calculate the optimality gap
     optimality_gap = ((total_travel_cost - optimal_value) / total_travel_cost) * 100
 
-    return optimal_value, optimality_gap
+    # Time: End
+    end_time = time()
+    execution_time = end_time - start_time
+
+    return optimal_value, optimality_gap, execution_time
 end
 
 end

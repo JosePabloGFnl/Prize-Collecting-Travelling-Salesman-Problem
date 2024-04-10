@@ -57,9 +57,9 @@ function cheapest_insertion_heuristic(cities_file::AbstractString, distances::Ar
     improved_travel_cost, h2_ls_time = local_search.node_swap(cities_file, total_travel_cost, recollected_prize, I, distances)
 
     # Call the gurobi_optimizer function
-    optimal_value, optimality_gap = optimizer.gurobi_optimizer(distances, minimum_profit, prizes, penalties, total_travel_cost)
+    optimal_value, optimality_gap, gurobi_time = optimizer.gurobi_optimizer(distances, minimum_profit, prizes, penalties, total_travel_cost)
 
-    return recollected_prize, total_travel_cost, improved_travel_cost, optimal_value, optimality_gap, h2_ls_time
+    return recollected_prize, total_travel_cost, improved_travel_cost, optimal_value, optimality_gap, h2_ls_time, gurobi_time
 end
 
 end
