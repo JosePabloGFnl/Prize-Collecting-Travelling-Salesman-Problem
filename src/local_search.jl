@@ -62,8 +62,6 @@ function node_swap(cities_file::AbstractString, total_travel_cost::Int64, recoll
         # Adjust the new_travel_cost by the penalties of the cities removed and added
         new_travel_cost = new_travel_cost - city_to_add[3] + city_to_remove[3]
 
-        new_prize = recollected_prize - city_to_remove[2] + city_to_add[2]
-
         if (total_travel_cost > new_travel_cost) && (new_prize >=minimum_profit)
             Improve = true
             total_travel_cost = new_travel_cost
