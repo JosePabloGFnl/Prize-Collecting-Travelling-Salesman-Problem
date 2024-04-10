@@ -10,20 +10,20 @@ function instance_generator(iteration::Int)
     max_prize = parse(Int64, ENV["MAX_PRIZE"])
 
     # Create a DataFrame to store city prizes and penalties
-    df_prizes = DataFrame(city = 1:cities, 
+    df = DataFrame(city = 1:cities, 
                 prize = rand(min_prize:max_prize,cities),
                 penalty = rand(min_prize:max_prize,cities)
                 )
 
     # Create a distance matrix
-    distances = rand(min_distance:max_distance, cities, cities)
-    distances = max.(distances, distances')  # Make the matrix symmetric
+    distances = tril(rand(min_distance:max_distance, cities, cities))
+    distances = distances + distances' - diagm(diag(distances))  # Make the matrix symmetric
     distances[diagind(distances)] .= 0  # Set diagonal elements to 0
 
     filename = (ENV["GENERATED_FILE"] * string(iteration) * ".txt")
     writedlm(filename, Matrix(df))
 
-    return filename
+    return filename, distances
 
 end
 
