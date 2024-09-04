@@ -17,7 +17,6 @@ function node_swap(cities_file::AbstractString, total_travel_cost::Int64, recoll
 
     n = size(cities, 1)
     
-    Improve = false
     new_travel_cost = 0
 
     able_to_replace = copy((I))
@@ -25,7 +24,7 @@ function node_swap(cities_file::AbstractString, total_travel_cost::Int64, recoll
     # Time: Start
     heuristic_start_time = time()
 
-    while (Improve == false && !isempty(able_to_replace))
+    while (!isempty(able_to_replace))
         city_to_remove = cities[rand(able_to_replace), :]
 
         radius = calculate_radius(city_to_remove, distances)
@@ -66,11 +65,9 @@ function node_swap(cities_file::AbstractString, total_travel_cost::Int64, recoll
         new_travel_cost = new_travel_cost - city_to_add[3] + city_to_remove[3]
 
         if (total_travel_cost > new_travel_cost) && (new_prize >=minimum_profit)
-            Improve = true
             total_travel_cost = new_travel_cost
             recollected_prize = new_prize
         else
-            Improve = false
             able_to_replace = setdiff(able_to_replace, city_to_remove[1])
         end
 
