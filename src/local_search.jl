@@ -31,7 +31,15 @@ function node_swap(cities_file::AbstractString, total_travel_cost::Int64, recoll
             city_to_add = cities[rand(cities_to_add_candidates), :]
         else
             able_to_replace = setdiff(able_to_replace, city_to_remove[1])
-        end
+            if isempty(able_to_replace)
+                break
+            else
+                city_to_remove = cities[rand(able_to_replace), :]
+        
+                cities_to_add_candidates = setdiff(cities[:, 1], I)
+                city_to_add = cities[rand(cities_to_add_candidates), :]
+            end
+        end    
         
         # Calculate the indices of the city to remove and add
         idx = findall(x -> x == city_to_remove[1], I)
@@ -59,10 +67,20 @@ function node_swap(cities_file::AbstractString, total_travel_cost::Int64, recoll
         new_travel_cost = new_travel_cost - city_to_add[3] + city_to_remove[3]
 
         if (total_travel_cost > new_travel_cost) && (new_prize >=minimum_profit)
-            total_travel_cost = new_travel_cost
-            recollected_prize = new_prize
-        else
+            # Perform the swap in the tour I
+            replace!(I, city_to_remove[1]=>city_to_add[1])
+
             able_to_replace = setdiff(able_to_replace, city_to_remove[1])
+            if isempty(able_to_replace)
+                break
+            else
+                city_to_remove = cities[rand(able_to_replace), :]
+
+                total_travel_cost = new_travel_cost
+                recollected_prize = new_prize
+            end
+        else
+            cities_to_add_candidates = setdiff(cities_to_add_candidates, city_to_add[1])
         end
 
     end
