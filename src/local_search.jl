@@ -17,7 +17,7 @@ function node_swap(cities_file::AbstractString, total_travel_cost::Int64, recoll
     able_to_replace = copy((I))
 
     # Filter out cities that are already in the tour
-    cities_to_add_candidates = setdiff(cities[cities[1]], I)
+    cities_to_add_candidates = setdiff(cities[:, 1], I)
 
     # Time: Start
     heuristic_start_time = time()
