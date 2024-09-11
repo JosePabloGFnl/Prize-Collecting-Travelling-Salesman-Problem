@@ -4,11 +4,6 @@ using DotEnv, .minimum_profit, DelimitedFiles, Statistics
 DotEnv.load()
 #Nearest Neighbor-type Heuristic
 
-function calculate_radius(city_to_remove::Vector, distances::Array)
-    mean = Statistics.mean(distances[city_to_remove[1]])
-    return mean
-end
-
 function node_swap(cities_file::AbstractString, total_travel_cost::Int64, recollected_prize::Int, I::Array, distances::Array)
     # load cities data
     cities = readdlm(cities_file, '\t', Int64)
@@ -27,17 +22,11 @@ function node_swap(cities_file::AbstractString, total_travel_cost::Int64, recoll
     while (!isempty(able_to_replace))
         city_to_remove = cities[rand(able_to_replace), :]
 
-        radius = calculate_radius(city_to_remove, distances)
-        cities_within_radius = findall(distances[city_to_remove[1], :] .<= radius)
-
-        # Filter out cities that are already in the tour
-        cities_to_add_candidates = setdiff(cities_within_radius, I)
-
-        if isempty(cities_to_add_candidates)
+        if isempty(able_to_replace)
             break  # stop the loop
         end
 
-        city_to_add = cities[rand(cities_to_add_candidates), :]
+        city_to_add = cities[rand(able_to_replace), :]
         
         # Calculate the indices of the city to remove and add
         idx = findall(x -> x == city_to_remove[1], I)
