@@ -25,11 +25,11 @@ function node_swap(cities_file::AbstractString, total_travel_cost::Int64, recoll
     while (!isempty(able_to_replace))
         city_to_remove = cities[rand(able_to_replace), :]
 
-        if isempty(cities_to_add_candidates)
-            break  # stop the loop
+        if !isempty(cities_to_add_candidates)
+            city_to_add = cities[rand(cities_to_add_candidates), :]
+        else
+            able_to_replace = setdiff(able_to_replace, city_to_remove[1])
         end
-
-        city_to_add = cities[rand(cities_to_add_candidates), :]
         
         # Calculate the indices of the city to remove and add
         idx = findall(x -> x == city_to_remove[1], I)
