@@ -16,17 +16,20 @@ function node_swap(cities_file::AbstractString, total_travel_cost::Int64, recoll
 
     able_to_replace = copy((I))
 
+    # Filter out cities that are already in the tour
+    cities_to_add_candidates = setdiff(cities[cities[1]], I)
+
     # Time: Start
     heuristic_start_time = time()
 
     while (!isempty(able_to_replace))
         city_to_remove = cities[rand(able_to_replace), :]
 
-        if isempty(able_to_replace)
+        if isempty(cities_to_add_candidates)
             break  # stop the loop
         end
 
-        city_to_add = cities[rand(able_to_replace), :]
+        city_to_add = cities[rand(cities_to_add_candidates), :]
         
         # Calculate the indices of the city to remove and add
         idx = findall(x -> x == city_to_remove[1], I)
