@@ -4,11 +4,6 @@ using DotEnv, .minimum_profit, DelimitedFiles, Statistics
 DotEnv.load()
 #Nearest Neighbor-type Heuristic
 
-function calculate_radius(city_to_remove::Vector, distances::Array)
-    mean = Statistics.mean(distances[city_to_remove[1]])
-    return mean
-end
-
 function node_swap(cities_file::AbstractString, total_travel_cost::Int64, recollected_prize::Int, I::Array, distances::Array)
     # load cities data
     cities = readdlm(cities_file, '\t', Int64)
@@ -17,28 +12,34 @@ function node_swap(cities_file::AbstractString, total_travel_cost::Int64, recoll
 
     n = size(cities, 1)
     
-    Improve = false
     new_travel_cost = 0
 
     able_to_replace = copy((I))
 
+    # Randomly select a city to remove from the tour
+    city_to_remove = cities[rand(able_to_replace), :]
+
+    # Filter out cities that are already in the tour
+    cities_to_add_candidates = setdiff(cities[:, 1], I)
+
     # Time: Start
     heuristic_start_time = time()
 
-    while (Improve == false && !isempty(able_to_replace))
-        city_to_remove = cities[rand(able_to_replace), :]
+    while (!isempty(able_to_replace))
 
-        radius = calculate_radius(city_to_remove, distances)
-        cities_within_radius = findall(distances[city_to_remove[1], :] .<= radius)
-
-        # Filter out cities that are already in the tour
-        cities_to_add_candidates = setdiff(cities_within_radius, I)
-
-        if isempty(cities_to_add_candidates)
-            break  # stop the loop
-        end
-
-        city_to_add = cities[rand(cities_to_add_candidates), :]
+        if !isempty(cities_to_add_candidates)
+            city_to_add = cities[rand(cities_to_add_candidates), :]
+        else
+            able_to_replace = setdiff(able_to_replace, city_to_remove[1])
+            if isempty(able_to_replace)
+                break
+            else
+                city_to_remove = cities[rand(able_to_replace), :]
+        
+                cities_to_add_candidates = setdiff(cities[:, 1], I)
+                city_to_add = cities[rand(cities_to_add_candidates), :]
+            end
+        end    
         
         # Calculate the indices of the city to remove and add
         idx = findall(x -> x == city_to_remove[1], I)
@@ -66,12 +67,20 @@ function node_swap(cities_file::AbstractString, total_travel_cost::Int64, recoll
         new_travel_cost = new_travel_cost - city_to_add[3] + city_to_remove[3]
 
         if (total_travel_cost > new_travel_cost) && (new_prize >=minimum_profit)
-            Improve = true
-            total_travel_cost = new_travel_cost
-            recollected_prize = new_prize
-        else
-            Improve = false
+            # Perform the swap in the tour I
+            replace!(I, city_to_remove[1]=>city_to_add[1])
+
             able_to_replace = setdiff(able_to_replace, city_to_remove[1])
+            if isempty(able_to_replace)
+                break
+            else
+                city_to_remove = cities[rand(able_to_replace), :]
+
+                total_travel_cost = new_travel_cost
+                recollected_prize = new_prize
+            end
+        else
+            cities_to_add_candidates = setdiff(cities_to_add_candidates, city_to_add[1])
         end
 
     end
