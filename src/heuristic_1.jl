@@ -55,7 +55,7 @@ function nearest_neighbor_heuristic(cities_file::AbstractString, distances::Arra
     # Call the gurobi_optimizer function
     optimal_value, optimality_gap, gurobi_time = optimizer.gurobi_optimizer(distances, minimum_profit, prizes, penalties, improved_travel_cost)
 
-    return recollected_prize, total_travel_cost, improved_travel_cost, optimal_value, optimality_gap, h1_ls_time, gurobi_time
+    return total_travel_cost, improved_travel_cost, optimal_value, optimality_gap, h1_ls_time, gurobi_time
 end
 
 end
