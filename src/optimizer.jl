@@ -32,8 +32,8 @@ function gurobi_optimizer(c, w0, prizes, penalties, total_travel_cost)
         return NaN  # or another appropriate value to indicate infeasibility
     end
 
-    # Get the optimal value
-    optimal_value = objective_value(model)
+    # Get the best bound value
+    optimal_value = dual_objective_value(model)
 
     # Calculate the optimality gap
     optimality_gap = ((total_travel_cost - optimal_value) / total_travel_cost) * 100
