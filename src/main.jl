@@ -2,7 +2,7 @@ include("generator.jl")
 include("heuristic_1.jl")
 include("heuristic_2.jl")
 include("experimental_results.jl")
-using DotEnv, DelimitedFiles, DataFrames
+using DotEnv, DelimitedFiles, DataFrames, CSV
 import .generator, .heuristic_1, .heuristic_2, .experimental_results
 DotEnv.load()
 
@@ -15,4 +15,4 @@ for i in 1:iterations
     global(results) = experimental_results.experiments_table(i, total_travel_cost_h1, improved_travel_cost_h1, optimal_value_h1, optimality_gap_h1, h1_ls_time, gurobi_time_h1, total_travel_cost_h2, improved_travel_cost_h2, optimality_gap_h2, h2_ls_time)
 end
 
-writedlm(ENV["RESULTS"], Matrix(results))
+CSV.write(ENV["RESULTS"], results)
