@@ -70,7 +70,7 @@ Alpha is used for the minimum profit calculation in each constructive heuristic.
 | ------------- | ------------- |
 | 60  | .3  |
 | 400  | .6  |
-| 5000  | .9  |
+| 2000  | .9  |
 
 ## References
 
