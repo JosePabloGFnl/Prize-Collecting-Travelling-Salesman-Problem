@@ -3,7 +3,7 @@ include("minimum_profit.jl")
 include("local_search.jl")
 include("optimizer.jl")
 using DotEnv, .minimum_profit, DelimitedFiles, .local_search, .optimizer
-DotEnv.load()
+DotEnv.load!()
 #Nearest Neighbor-type Heuristic
 
 function nearest_neighbor_heuristic(cities_file::AbstractString, distances::Array)
@@ -50,12 +50,16 @@ function nearest_neighbor_heuristic(cities_file::AbstractString, distances::Arra
     penalties = cities[:, 3]
 
     # Local Search improvement
-    improved_travel_cost, h1_ls_time = local_search.node_swap(cities_file, total_travel_cost, recollected_prize, I, distances)
-
+    # Swap
+    swapped_tour, improved_travel_cost, h1_ls_time = local_search.node_swap(cities_file, total_travel_cost, recollected_prize, I, distances)
+    println(swapped_tour, " H1 swapped cost ", improved_travel_cost)
+    # 2-opt
+    two_opt_solution, improved_opt_cost, h1_opt_time = local_search.two_opt_move(swapped_tour, distances, prizes, penalties, minimum_profit)
+    println(two_opt_solution, " H1 2-opt cost ", improved_opt_cost)
     # Call the gurobi_optimizer function
     optimal_value, gurobi_time = optimizer.gurobi_optimizer(distances, minimum_profit, prizes, penalties)
 
-    return total_travel_cost, improved_travel_cost, optimal_value, h1_ls_time, gurobi_time
+    return total_travel_cost, improved_opt_cost, optimal_value, h1_ls_time, gurobi_time
 end
 
 end
