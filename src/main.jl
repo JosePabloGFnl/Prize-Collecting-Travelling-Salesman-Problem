@@ -10,9 +10,9 @@ iterations = parse(Int64, ENV["ITERATIONS"])
 
 for i in 1:iterations
     filename, distances = generator.instance_generator(i)
-    total_travel_cost_h1, improved_travel_cost_h1, optimal_value_h1, optimality_gap_h1, h1_ls_time, gurobi_time_h1 = heuristic_1.nearest_neighbor_heuristic(filename, distances)
-    total_travel_cost_h2, improved_travel_cost_h2, optimality_gap_h2, h2_ls_time = heuristic_2.cheapest_insertion_heuristic(filename, distances)
-    global(results) = experimental_results.experiments_table(i, total_travel_cost_h1, improved_travel_cost_h1, optimal_value_h1, optimality_gap_h1, h1_ls_time, gurobi_time_h1, total_travel_cost_h2, improved_travel_cost_h2, optimality_gap_h2, h2_ls_time)
+    total_travel_cost_h1, improved_travel_cost_h1, optimal_value, h1_ls_time, gurobi_time_h1 = heuristic_1.nearest_neighbor_heuristic(filename, distances)
+    total_travel_cost_h2, improved_travel_cost_h2, h2_ls_time = heuristic_2.cheapest_insertion_heuristic(filename, distances)
+    global(results) = experimental_results.experiments_table(i, total_travel_cost_h1, improved_travel_cost_h1, optimal_value, h1_ls_time, gurobi_time_h1, total_travel_cost_h2, improved_travel_cost_h2, h2_ls_time)
 end
 
 CSV.write(ENV["RESULTS"], results)

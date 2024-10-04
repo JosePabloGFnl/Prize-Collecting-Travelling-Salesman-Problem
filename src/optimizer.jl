@@ -1,7 +1,7 @@
 module optimizer
 using JuMP, Gurobi
 
-function gurobi_optimizer(c, w0, prizes, penalties, total_travel_cost)
+function gurobi_optimizer(c::Matrix{Int64}, w0::Int64, prizes::Vector{Int64}, penalties::Vector{Int64})
     # Calculate the total number of cities
     n = length(prizes)
 
@@ -54,7 +54,7 @@ function gurobi_optimizer(c, w0, prizes, penalties, total_travel_cost)
     optimal_value = dual_objective_value(model)
 
     # Calculate the optimality gap
-    optimality_gap = (abs(total_travel_cost - optimal_value) / abs(total_travel_cost)) * 100
+    #optimality_gap = (abs(total_travel_cost - optimal_value) / abs(total_travel_cost)) * 100
 
     # Time: End
     end_time = time()
@@ -69,7 +69,7 @@ function gurobi_optimizer(c, w0, prizes, penalties, total_travel_cost)
     gurobi_sol = interpret_gurobi_pctsp_solution(x, y)
     @show gurobi_sol
 
-    return optimal_value, optimality_gap, execution_time
+    return optimal_value, execution_time
 end
 
 function interpret_gurobi_pctsp_solution(x::Matrix{Int64}, y::Vector{Int64}, threshold::Float64=0.5)
