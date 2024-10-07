@@ -51,8 +51,8 @@ function gurobi_optimizer(c::Matrix{Int64}, w0::Int64, prizes::Vector{Int64}, pe
     end
 
     # Get the best bound value
-    optimal_value = dual_objective_value(model)
-
+    best_bound_value = dual_objective_value(model)
+    optimal_value = objective_value(model)
     # Calculate the optimality gap
     #optimality_gap = (abs(total_travel_cost - optimal_value) / abs(total_travel_cost)) * 100
 
@@ -67,9 +67,9 @@ function gurobi_optimizer(c::Matrix{Int64}, w0::Int64, prizes::Vector{Int64}, pe
     #println(x)
     #println(y)
     gurobi_sol = interpret_gurobi_pctsp_solution(x, y)
-    @show gurobi_sol
+    @show gurobi_sol, optimal_value
 
-    return optimal_value, execution_time
+    return best_bound_value, execution_time
 end
 
 function interpret_gurobi_pctsp_solution(x::Matrix{Int64}, y::Vector{Int64}, threshold::Float64=0.5)
