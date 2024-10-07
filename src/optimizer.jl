@@ -1,5 +1,6 @@
 module optimizer
-using JuMP, Gurobi
+using JuMP, Gurobi, MathOptInterface
+const MOI = MathOptInterface
 
 function gurobi_optimizer(c::Matrix{Int64}, w0::Int64, prizes::Vector{Int64}, penalties::Vector{Int64})
     # Calculate the total number of cities
@@ -10,6 +11,9 @@ function gurobi_optimizer(c::Matrix{Int64}, w0::Int64, prizes::Vector{Int64}, pe
     # Create a model
     model = Model(Gurobi.Optimizer)
     set_silent(model)
+
+    # Set the time limit (in seconds)
+    set_optimizer_attribute(model, "TimeLimit", 1800.0)
 
     # Time: Start
     start_time = time()
@@ -45,36 +49,43 @@ function gurobi_optimizer(c::Matrix{Int64}, w0::Int64, prizes::Vector{Int64}, pe
     optimize!(model)
 
     # Check the optimization status
-    if termination_status(model) == MOI.INFEASIBLE
-        println("The model is infeasible.")
-        return NaN  # or another appropriate value to indicate infeasibility
+    if primal_status(model) != MOI.FEASIBLE_POINT
+        @error "Feasible Point not found."
+        obj_value = 0
+        X = [0 0; 0 0]
+        Y = [0, 0]
+
+        best_bound_value = 1000000.0
+        optimal_value = 1000000.0
+    else
+        obj_value = trunc(Int, objective_value(model))
+        X = value.(model[:x])
+        X = round.(Int, X)
+        Y = value.(model[:y])
+        Y = round.(Int, Y)
+
+        # Get the best bound value
+        best_bound_value = dual_objective_value(model)
+        optimal_value = objective_value(model)
+
+        gurobi_sol = interpret_gurobi_pctsp_solution(x, y)
+        @show gurobi_sol, optimal_value
     end
 
-    # Get the best bound value
-    best_bound_value = dual_objective_value(model)
-    optimal_value = objective_value(model)
-    # Calculate the optimality gap
-    #optimality_gap = (abs(total_travel_cost - optimal_value) / abs(total_travel_cost)) * 100
+    if termination_status(model) != MOI.OPTIMAL
+        @warn "Optimal Solution not found."
+    end
 
     # Time: End
     end_time = time()
     execution_time = end_time - start_time
-    x = value.(model[:x])
-    x = round.(Int, x)
-    y = value.(model[:y])
-    y = round.(Int, y)
-
-    #println(x)
-    #println(y)
-    gurobi_sol = interpret_gurobi_pctsp_solution(x, y)
-    @show gurobi_sol, optimal_value
 
     return best_bound_value, execution_time
 end
 
-function interpret_gurobi_pctsp_solution(x::Matrix{Int64}, y::Vector{Int64}, threshold::Float64=0.5)
+function interpret_gurobi_pctsp_solution(x::Matrix{JuMP.VariableRef}, y::Vector{JuMP.VariableRef}, threshold::Float64=0.5)
     n = length(y)
-    visited_cities = findall(y .>= threshold)
+    visited_cities = findall(value.(y) .>= threshold)
     
     tour = Int[]
     unvisited = Set(visited_cities)
