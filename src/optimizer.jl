@@ -97,7 +97,7 @@ function interpret_gurobi_pctsp_solution(x::Matrix{JuMP.VariableRef}, y::Vector{
             delete!(unvisited, start)
         else
             current = tour[end]
-            next = findfirst(j -> j in unvisited && x[current, j] >= threshold, 1:n)
+            next = findfirst(j -> j in unvisited && value(x[current, j]) >= threshold, 1:n)
             
             if next === nothing
                 # If no next city found, this might be the end of a subtour
