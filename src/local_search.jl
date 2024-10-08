@@ -1,7 +1,7 @@
 module local_search
 include("minimum_profit.jl")
 using DotEnv, .minimum_profit, DelimitedFiles, Statistics
-DotEnv.load!()
+DotEnv.load()
 #Nearest Neighbor-type Heuristic
 
 function node_swap(cities_file::AbstractString, total_travel_cost::Int64, recollected_prize::Int, I::Array, distances::Array)

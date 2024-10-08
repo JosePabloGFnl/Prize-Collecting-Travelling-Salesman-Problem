@@ -3,7 +3,7 @@ include("minimum_profit.jl")
 include("local_search.jl")
 include("optimizer.jl")
 using DotEnv, .minimum_profit, DelimitedFiles, .local_search, .optimizer
-DotEnv.load!()
+DotEnv.load()
 # Cheapest Insertion-type Heuristic
 
 function cheapest_insertion_heuristic(cities_file::AbstractString, distances::Array)
