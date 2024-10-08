@@ -1,6 +1,6 @@
 # Prize-Collecting-Travelling-Salesman-Problem
  
-This repo is focused on solving the prize collecting travelling salesman problem with two constructive heuristics.
+This repo is focused on solving the prize collecting traveling salesman problem with two constructive heuristics.
 
 ## Procedure
 
@@ -14,10 +14,10 @@ Both heuristics use minimum_profit.jl to calculate the minimum profit to be used
 
 A local search swap-move is executed in local_search.jl. This is applied to both heuristics to try to improve the given results.
 
-Afterwards, experimental_results.jl is executed to store the results into a dataframe which is exported into a .txt file named `results.txt`. The columns in said dataframe are the following:
+Afterwards, experimental_results.jl is executed to store the results into a dataframe which is exported into a .csv file named `results.csv`. The columns in said dataframe are the following:
 
-| Iteration | H1 Total Travel Cost | H1 Recollected Prize | H1 Prize/Cost Ratio | H1 Local Search Total Travel Cost | Improved? H1 | H2 Total Travel Cost | H2 Recollected Prize | H2 Prize/Cost Ratio | H2 Local Search Total Travel Cost | Improved? H2 |
-| ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- |
+| Iteration | H1 Total Travel Cost | H1 Local Search Total Travel Cost | Optimal Value | Optimality Gap H1 | LS H1 Time | Gurobi H1 Time | Improved? H1 | H2 Total Travel Cost | H2 Local Search Total Travel Cost | Optimality Gap H2 | LS H2 Time | Improved? H2 |
+| ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- |
 
 This is all executed n times for the given iterations.
 
