@@ -48,17 +48,18 @@ import Pkg; Pkg.add("library")
 
 ### Environmental variables
 
-The parameters used for the x and y axis positions as well as prizes were based on the proposition by Dell’Amico, M. et. al.:
+The parameters used for the minimum and maximum distances as well as prizes were based on the proposition by Dell’Amico, M. et. al. [1]:
 
 ``` textplain
-GENERATED_FILE="cities"
-MIN_AXIS=0
+GENERATED_FILE=outputs/cities/cities
+RESULTS=outputs/results/results.csv
+MIN_DISTANCE=0
 MIN_PRIZE=0
-MAX_AXIS=1000
+MAX_DISTANCE=707
 MAX_PRIZE=100
 QUANTITY_CITIES=60
 ALPHA=.3
-ITERATIONS=20
+ITERATIONS=3
 ```
 
 ### Alpha
