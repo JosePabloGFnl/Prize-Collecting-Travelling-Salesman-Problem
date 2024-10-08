@@ -17,7 +17,7 @@ A local search swap-move is executed in local_search.jl. This is applied to both
 Afterwards, experimental_results.jl is executed to store the results into a dataframe which is exported into a .csv file named `results.csv`. The columns in said dataframe are the following:
 
 | Iteration | H1 Total Travel Cost | H1 Local Search Total Travel Cost | Optimal Value | Optimality Gap H1 | LS H1 Time | Gurobi H1 Time | Improved? H1 | H2 Total Travel Cost | H2 Local Search Total Travel Cost | Optimality Gap H2 | LS H2 Time | Improved? H2 |
-| ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- |
+| ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- |
 
 This is all executed n times for the given iterations.
 
