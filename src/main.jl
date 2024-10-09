@@ -7,8 +7,13 @@ using DotEnv, DelimitedFiles, DataFrames, CSV
 import .generator, .heuristic_1, .heuristic_2, .experimental_results, .minimum_profit_calc
 DotEnv.load()
 
+# Number of iterations
 iterations = parse(Int64, ENV["ITERATIONS"])
+
+# Generate 'cities' file and distance matrix
 filename, distances = generator.instance_generator()
+
+# Define variables to be used in the loop
 cities = readdlm(filename, '\t', Int64)
 minimum_profit = minimum_profit_calc.calculate_minimum_profit(cities)
 
