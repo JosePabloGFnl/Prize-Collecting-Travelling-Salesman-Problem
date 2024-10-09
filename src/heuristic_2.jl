@@ -1,7 +1,6 @@
 module heuristic_2
 include("local_search.jl")
-include("optimizer.jl")
-using DotEnv, DelimitedFiles, .local_search, .optimizer
+using DotEnv, DelimitedFiles, .local_search
 DotEnv.load()
 # Cheapest Insertion-type Heuristic
 
