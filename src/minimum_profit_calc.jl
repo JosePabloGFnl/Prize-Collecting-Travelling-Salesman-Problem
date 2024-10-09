@@ -1,4 +1,4 @@
-module minimum_profit
+module minimum_profit_calc
 using DotEnv, Statistics
 DotEnv.load()
 

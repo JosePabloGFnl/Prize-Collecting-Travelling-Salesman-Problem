@@ -1,16 +1,11 @@
 module heuristic_2
-include("minimum_profit.jl")
 include("local_search.jl")
 include("optimizer.jl")
-using DotEnv, .minimum_profit, DelimitedFiles, .local_search, .optimizer
+using DotEnv, DelimitedFiles, .local_search, .optimizer
 DotEnv.load()
 # Cheapest Insertion-type Heuristic
 
-function cheapest_insertion_heuristic(cities_file::AbstractString, distances::Array)
-    # load cities data
-    cities = readdlm(cities_file, '\t', Int64)
-
-    minimum_profit = calculate_minimum_profit(cities)
+function cheapest_insertion_heuristic(cities::Matrix, distances::Array, minimum_profit::Int64)
 
     n = size(cities, 1)
 
@@ -55,7 +50,7 @@ function cheapest_insertion_heuristic(cities_file::AbstractString, distances::Ar
 
     # Local Search improvement
     # Swap
-    swapped_tour, improved_travel_cost, h2_ls_time = local_search.node_swap(cities_file, total_travel_cost, recollected_prize, I, distances)
+    swapped_tour, improved_travel_cost, h2_ls_time = local_search.node_swap(cities, total_travel_cost, recollected_prize, I, distances, minimum_profit::Int64)
     println(swapped_tour, " H2 swapped cost ", improved_travel_cost)
     # 2-opt
     two_opt_solution, improved_opt_cost, h2_opt_time = local_search.two_opt_move(swapped_tour, distances, prizes, penalties, minimum_profit)
