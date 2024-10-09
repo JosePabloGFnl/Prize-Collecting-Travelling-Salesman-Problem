@@ -5,7 +5,7 @@ using DotEnv, DelimitedFiles, .local_search, .optimizer
 DotEnv.load()
 # Cheapest Insertion-type Heuristic
 
-function cheapest_insertion_heuristic(cities::Matrix, distances::Array, minimum_profit::Int64, n::Int64)
+function cheapest_insertion_heuristic(cities::Matrix, distances::Array, minimum_profit::Int64, n::Int64, prizes::Vector{Int64}, penalties::Vector{Int64})
 
     #function for minimum distance
     min_from_1 = cities[(argmin(distances[2:end, 1]) + 1), 1]
@@ -42,9 +42,6 @@ function cheapest_insertion_heuristic(cities::Matrix, distances::Array, minimum_
 
     # Sum of Penalties into the total travel cost
     total_travel_cost += sum(city[3] for city in values(able_to_visited))
-
-    prizes = cities[:, 2]
-    penalties = cities[:, 3]
 
     # Local Search improvement
     # Swap

@@ -5,7 +5,7 @@ using DotEnv, DelimitedFiles, .local_search, .optimizer
 DotEnv.load()
 #Nearest Neighbor-type Heuristic
 
-function nearest_neighbor_heuristic(cities::Matrix, distances::Array, minimum_profit::Int64, n::Int64)
+function nearest_neighbor_heuristic(cities::Matrix, distances::Array, minimum_profit::Int64, n::Int64, prizes::Vector{Int64}, penalties::Vector{Int64})
 
     # variable initialization
     I = [cities[1, 1]]
@@ -38,9 +38,6 @@ function nearest_neighbor_heuristic(cities::Matrix, distances::Array, minimum_pr
 
     # Sum of Penalties into the total travel cost
     total_travel_cost += sum(city[3] for city in values(able_to_visited))
-
-    prizes = cities[:, 2]
-    penalties = cities[:, 3]
 
     # Local Search improvement
     # Swap
