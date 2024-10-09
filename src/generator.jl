@@ -2,7 +2,7 @@ module generator
 using DataFrames, DotEnv, DelimitedFiles, LinearAlgebra
 DotEnv.load()
 
-function instance_generator(iteration::Int)
+function instance_generator()
     cities = parse(Int64, ENV["QUANTITY_CITIES"])
     min_distance = parse(Int64, ENV["MIN_DISTANCE"])
     max_distance = parse(Int64, ENV["MAX_DISTANCE"])
@@ -20,7 +20,7 @@ function instance_generator(iteration::Int)
     distances = distances + distances' - diagm(diag(distances))  # Make the matrix symmetric
     distances[diagind(distances)] .= 0  # Set diagonal elements to 0
 
-    filename = (ENV["GENERATED_FILE"] * string(iteration) * ".txt")
+    filename = (ENV["GENERATED_FILE"] * ".txt")
     writedlm(filename, Matrix(df))
 
     return filename, distances
