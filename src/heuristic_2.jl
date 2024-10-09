@@ -5,9 +5,7 @@ using DotEnv, DelimitedFiles, .local_search, .optimizer
 DotEnv.load()
 # Cheapest Insertion-type Heuristic
 
-function cheapest_insertion_heuristic(cities::Matrix, distances::Array, minimum_profit::Int64)
-
-    n = size(cities, 1)
+function cheapest_insertion_heuristic(cities::Matrix, distances::Array, minimum_profit::Int64, n::Int64)
 
     #function for minimum distance
     min_from_1 = cities[(argmin(distances[2:end, 1]) + 1), 1]
@@ -50,7 +48,7 @@ function cheapest_insertion_heuristic(cities::Matrix, distances::Array, minimum_
 
     # Local Search improvement
     # Swap
-    swapped_tour, improved_travel_cost, h2_ls_time = local_search.node_swap(cities, total_travel_cost, recollected_prize, I, distances, minimum_profit::Int64)
+    swapped_tour, improved_travel_cost, h2_ls_time = local_search.node_swap(cities, total_travel_cost, recollected_prize, I, distances, minimum_profit, n)
     println(swapped_tour, " H2 swapped cost ", improved_travel_cost)
     # 2-opt
     two_opt_solution, improved_opt_cost, h2_opt_time = local_search.two_opt_move(swapped_tour, distances, prizes, penalties, minimum_profit)

@@ -3,9 +3,7 @@ using DotEnv, DelimitedFiles, Statistics
 DotEnv.load()
 #Nearest Neighbor-type Heuristic
 
-function node_swap(cities::Matrix, total_travel_cost::Int64, recollected_prize::Int, I::Array, distances::Array, minimum_profit::Int64)
-
-    n = size(cities, 1)
+function node_swap(cities::Matrix, total_travel_cost::Int64, recollected_prize::Int, I::Array, distances::Array, minimum_profit::Int64, n::Int64)
 
     new_travel_cost = 0
 

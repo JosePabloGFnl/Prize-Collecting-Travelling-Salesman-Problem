@@ -5,9 +5,7 @@ using DotEnv, DelimitedFiles, .local_search, .optimizer
 DotEnv.load()
 #Nearest Neighbor-type Heuristic
 
-function nearest_neighbor_heuristic(cities::Matrix, distances::Array, minimum_profit::Int64)
-
-    n = size(cities, 1)
+function nearest_neighbor_heuristic(cities::Matrix, distances::Array, minimum_profit::Int64, n::Int64)
 
     # variable initialization
     I = [cities[1, 1]]
@@ -46,7 +44,7 @@ function nearest_neighbor_heuristic(cities::Matrix, distances::Array, minimum_pr
 
     # Local Search improvement
     # Swap
-    swapped_tour, improved_travel_cost, h1_ls_time = local_search.node_swap(cities, total_travel_cost, recollected_prize, I, distances, minimum_profit)
+    swapped_tour, improved_travel_cost, h1_ls_time = local_search.node_swap(cities, total_travel_cost, recollected_prize, I, distances, minimum_profit, n)
     println(swapped_tour, " H1 swapped cost ", improved_travel_cost)
     # 2-opt
     two_opt_solution, improved_opt_cost, h1_opt_time = local_search.two_opt_move(swapped_tour, distances, prizes, penalties, minimum_profit)
