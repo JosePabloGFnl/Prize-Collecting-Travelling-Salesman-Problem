@@ -52,7 +52,7 @@ function cheapest_insertion_heuristic(cities::Matrix, distances::Array, minimum_
     # Call the gurobi_optimizer function
     #optimal_value, optimality_gap, gurobi_time = optimizer.gurobi_optimizer(distances, minimum_profit, prizes, penalties, total_travel_cost)
 
-    return total_travel_cost, improved_opt_cost, h2_ls_time
+    return total_travel_cost, improved_opt_cost, (h2_ls_time + h2_opt_time)
 end
 
 end
