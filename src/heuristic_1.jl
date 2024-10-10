@@ -15,7 +15,7 @@ function nearest_neighbor_heuristic(cities::Matrix, distances::Array, minimum_pr
     able_to_visited = Dict(cities[i, 1] => cities[i, :] for i in 2:size(cities, 1))
 
     # In your loop where you're building the tour
-    while (!isempty(able_to_visited)) && (recollected_prize < minimum_profit)
+    while (!isempty(able_to_visited))
 
         # Calculate prize to cost ratios for each city in able_to_visited
         prize_cost_ratios = Dict(city_id => able_to_visited[city_id][2] / (distances[I[end], city_id] - able_to_visited[city_id][3]) for city_id in keys(able_to_visited))
@@ -36,17 +36,21 @@ function nearest_neighbor_heuristic(cities::Matrix, distances::Array, minimum_pr
     total_travel_cost += distances[I[end-1], I[end]]
 
     # Sum of Penalties into the total travel cost
-    total_travel_cost += sum(city[3] for city in values(able_to_visited))
+    if isempty(able_to_visited)
+        total_travel_cost = total_travel_cost
+    else
+        total_travel_cost += sum(city[3] for city in values(able_to_visited))
+    end
 
     # Local Search improvement
     # Swap
-    swapped_tour, improved_travel_cost, h1_ls_time = local_search.node_swap(cities, total_travel_cost, recollected_prize, I, distances, minimum_profit, n)
-    println(swapped_tour, " H1 swapped cost ", improved_travel_cost)
+    #swapped_tour, improved_travel_cost, h1_ls_time = local_search.node_swap(cities, total_travel_cost, recollected_prize, I, distances, minimum_profit, n)
+    #println(swapped_tour, " H1 swapped cost ", improved_travel_cost)
     # 2-opt
-    two_opt_solution, improved_opt_cost, h1_opt_time = local_search.two_opt_move(swapped_tour, distances, prizes, penalties, minimum_profit)
+    two_opt_solution, improved_opt_cost, h1_opt_time = local_search.two_opt_move(I, distances, prizes, penalties, minimum_profit)
     println(two_opt_solution, " H1 2-opt cost ", improved_opt_cost)
 
-    return total_travel_cost, improved_opt_cost, (h1_ls_time + h1_opt_time)
+    return total_travel_cost, improved_opt_cost, h1_opt_time
 end
 
 end
