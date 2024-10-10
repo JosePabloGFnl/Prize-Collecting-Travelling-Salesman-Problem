@@ -18,7 +18,7 @@ function nearest_neighbor_heuristic(cities::Matrix, distances::Array, minimum_pr
     while (!isempty(able_to_visited))
 
         # Calculate prize to cost ratios for each city in able_to_visited
-        prize_cost_ratios = Dict(city_id => able_to_visited[city_id][2] / (distances[I[end], city_id] - able_to_visited[city_id][3]) for city_id in keys(able_to_visited))
+        prize_cost_ratios = Dict(city_id => able_to_visited[city_id][2] - able_to_visited[city_id][3] / (distances[I[end], city_id]) for city_id in keys(able_to_visited))
 
         # Select the city with the minimum prize_cost_ratios
         added_city_id = argmax(prize_cost_ratios)[1]
