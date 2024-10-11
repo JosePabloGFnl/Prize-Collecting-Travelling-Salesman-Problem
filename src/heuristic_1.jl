@@ -56,7 +56,7 @@ function nearest_neighbor_heuristic(cities::Matrix, distances::Array, minimum_pr
     two_opt_solution, improved_opt_cost, h1_opt_time = local_search.two_opt_move(I, distances, prizes, penalties, minimum_profit)
     println(two_opt_solution, " H1 2-opt cost ", improved_opt_cost)
 
-    return total_travel_cost, improved_opt_cost, h1_opt_time
+    return total_travel_cost, improved_opt_cost, (h1_ls_time + h1_opt_time)
 end
 
 end
