@@ -10,9 +10,9 @@ function cheapest_insertion_heuristic(cities::Matrix, distances::Array, minimum_
     min_from_1 = cities[(argmin(distances[2:end, 1]) + 1), 1]
 
     # Calculate total_travel_cost as the round trip distance from city 1 to min_from_1
-    total_travel_cost = distances[1, min_from_1] + distances[min_from_1, 1]
+    total_travel_cost = distances[1, min_from_1]
 
-    I = [1, min_from_1, 1]
+    I = [1, min_from_1]
 
     # Initialize able_to_visited with city IDs as keys and city data as values
     able_to_visited = Dict(cities[i, 1] => cities[i, :] for i in 2:size(cities, 1) if cities[i, 1] != min_from_1)
