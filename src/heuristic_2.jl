@@ -32,6 +32,8 @@ function cheapest_insertion_heuristic(cities::Matrix, distances::Array, minimum_
 
         # Insertion phase
         distances_insertion = [distances[I[i], added_city[1]] + distances[added_city[1], I[i+1]] - distances[I[i], I[i+1]] for i in 1:length(I)-1]
+        # Add the distance for inserting the city at the last position
+        distances_insertion = vcat(distances_insertion, distances[I[end], added_city[1]] + distances[added_city[1], I[1]] - distances[I[end], I[1]])
         # Update tour
         insert!(I, argmin(distances_insertion) + 1, added_city[1])
         total_travel_cost += distances_insertion[argmin(distances_insertion)]
