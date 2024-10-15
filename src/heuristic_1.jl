@@ -39,7 +39,6 @@ function nearest_neighbor_heuristic(cities::Matrix, distances::Array, minimum_pr
     end
 
     #Connecting first and last city in the tour
-    push!(I, I[1])
     total_travel_cost += distances[I[end-1], I[end]]
 
     # Sum of Penalties into the total travel cost
