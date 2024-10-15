@@ -28,7 +28,7 @@ function nearest_neighbor_heuristic(cities::Matrix, distances::Array, minimum_pr
         # Assuming added_city_id is the ID of the city to be excluded
         penalty_cost_ratio = sum(city[3] for city_id in keys(able_to_visited) if city_id != added_city_id for city in [able_to_visited[city_id]]) / new_travel_cost
 
-        if penalty_cost_ratio < 0.05
+        if penalty_cost_ratio < 0.1
             break
         else
             recollected_prize += added_city[2]
